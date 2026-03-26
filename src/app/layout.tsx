@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
-import { AdsenseScript } from "@/components/ads/adsense-script";
 import { SiteFooter } from "@/components/layout/site-footer";
 import { SiteHeader } from "@/components/layout/site-header";
+import { adsConfig } from "@/lib/ads";
 import { getSiteUrl } from "@/lib/site";
 import "./globals.css";
 
@@ -32,8 +32,22 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ko">
+      <head>
+        {adsConfig.client ? (
+          <>
+            <meta
+              name="google-adsense-account"
+              content={adsConfig.client}
+            />
+            <script
+              async
+              src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${adsConfig.client}`}
+              crossOrigin="anonymous"
+            />
+          </>
+        ) : null}
+      </head>
       <body className="min-h-screen">
-        <AdsenseScript />
         <div className="flex min-h-screen flex-col">
           <SiteHeader />
           <main className="flex-1">{children}</main>
