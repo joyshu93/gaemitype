@@ -2,7 +2,7 @@ import Script from "next/script";
 import { adsConfig } from "@/lib/ads";
 
 export function AdsenseScript() {
-  if (!adsConfig.enabled || !adsConfig.client) {
+  if (!adsConfig.client) {
     return null;
   }
 

@@ -1,5 +1,4 @@
 import { AdSlot } from "@/components/ads/ad-slot";
-import { AdsenseScript } from "@/components/ads/adsense-script";
 import { canRenderAdPlacement } from "@/lib/ads";
 
 export function ResultAdSection() {
@@ -9,7 +8,6 @@ export function ResultAdSection() {
 
   return (
     <section className="mt-8 rounded-[28px] border border-ink/10 bg-white p-6 shadow-card">
-      <AdsenseScript />
       <p className="text-xs font-medium uppercase tracking-[0.24em] text-ink/42">
         광고
       </p>

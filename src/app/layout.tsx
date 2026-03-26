@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
+import { AdsenseScript } from "@/components/ads/adsense-script";
 import { SiteFooter } from "@/components/layout/site-footer";
 import { SiteHeader } from "@/components/layout/site-header";
 import { getSiteUrl } from "@/lib/site";
@@ -32,6 +33,7 @@ export default function RootLayout({
   return (
     <html lang="ko">
       <body className="min-h-screen">
+        <AdsenseScript />
         <div className="flex min-h-screen flex-col">
           <SiteHeader />
           <main className="flex-1">{children}</main>
