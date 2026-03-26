@@ -7,8 +7,8 @@ export const QUESTIONS: Question[] = [
     prompt: "친구가 맛집을 추천했어요. 오늘 저녁에 바로 가볼 수 있다면, 당신은 먼저 어떻게 하나요?",
     helper: "낯선 선택지를 마주했을 때의 첫 반응을 골라보세요.",
     options: [
-      { value: 0, code: "A", label: "후기와 메뉴를 먼저 보고 갈지 정한다" },
-      { value: 1, code: "P", label: "일단 가보고 현장에서 정한다" }
+      { value: 0, code: "A", label: "후기와 메뉴를 먼저 검색해본다" },
+      { value: 1, code: "P", label: "일단 가보고 현장에서 생각한다" }
     ]
   },
   {
@@ -27,8 +27,8 @@ export const QUESTIONS: Question[] = [
     prompt: "기다리던 일정이 갑자기 취소됐어요. 그 순간 당신은 보통 어떻게 움직이나요?",
     helper: "갑작스러운 변수 앞에서의 반응을 떠올려보세요.",
     options: [
-      { value: 0, code: "A", label: "원래 생각해둔 대안이 있는지 먼저 본다" },
-      { value: 1, code: "P", label: "그 자리에서 지금 할 일을 새로 정한다" }
+      { value: 0, code: "A", label: "원래 생각해둔 대안대로 움직인다" },
+      { value: 1, code: "P", label: "그 자리에서 지금 하고싶은 할 일을 새로 정한다" }
     ]
   },
   {
@@ -47,8 +47,8 @@ export const QUESTIONS: Question[] = [
   prompt: "처음 가보는 카페에 들어갔어요. 메뉴를 고를 때 더 먼저 하는 행동은?",
   helper: "낯선 선택지 앞에서의 습관을 떠올려보세요.",
   options: [
-    { value: 0, code: "A", label: "내가 원래 좋아하는 조합부터 먼저 찾는다" },
-    { value: 1, code: "P", label: "지금 제일 인기 있는 메뉴부터 본다" }
+    { value: 0, code: "A", label: "내가 원래 좋아하는 메뉴부터 먼저 찾는다" },
+    { value: 1, code: "P", label: "새로운 인기 메뉴부터 본다" }
   ]
 },
   {
@@ -57,18 +57,18 @@ export const QUESTIONS: Question[] = [
     prompt: "드라마나 유튜브 채널을 하나 정하면, 당신은 보통 어떤 편인가요?",
     helper: "한 번 정한 것을 얼마나 오래 가져가는지 떠올려보세요.",
     options: [
-      { value: 0, code: "L", label: "한번 마음에 들면 꽤 오래 본다" },
-      { value: 1, code: "T", label: "더 재밌는 게 보이면 바로 갈아탄다" }
+      { value: 0, code: "L", label: "구독하고 그 채널의 다른 영상을 섭렵한다" },
+      { value: 1, code: "T", label: "매번 더 재밌는 채널이 없는지 찾아본다" }
     ]
   },
   {
     id: "q07",
     axis: "LT",
-    prompt: "물건을 살 때 배송이 조금 늦어도 괜찮은 상황이라면, 당신은 무엇을 더 보나요?",
+    prompt: "물건을 사기 전 배송이 조금 오래걸린다면, 당신은 무엇을 더 보나요?",
     helper: "타이밍과 큰 방향 중 가까운 쪽을 골라보세요.",
     options: [
-      { value: 0, code: "L", label: "오래 써도 만족할 선택인지 본다" },
-      { value: 1, code: "T", label: "지금 사기 좋은 타이밍인지 본다" }
+      { value: 0, code: "L", label: "오래 만족할 상품인지 생각한다" },
+      { value: 1, code: "T", label: "지금 크게 세일하는지 확인한다" }
     ]
   },
   {
