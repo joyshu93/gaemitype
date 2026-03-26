@@ -5,7 +5,7 @@
 이 서비스는 투자 추천 서비스가 아닙니다.
 - 종목 추천을 하지 않습니다.
 - 수익을 보장하지 않습니다.
-- 매수/매도 시그널을 제공하지 않습니다.
+- 매수/매도 신호를 제공하지 않습니다.
 
 서비스 목적은 아래 3가지입니다.
 - 자기이해
@@ -22,113 +22,98 @@
 - TypeScript
 - Tailwind CSS
 - 정적 데이터 기반 구조
+- Vercel 배포
 
 ## 현재 구현 상태
 
 구현 완료:
 - 홈 화면
-- 질문 플로우 페이지
-- 계산/전환 페이지
+- 질문 플로우
+- 계산 페이지
 - 결과 페이지
 - 20문항 1문항 1화면 진행
-- 진행률 표시
-- 이전/다음 이동
 - localStorage 기반 답변 저장/복원
 - 4축 점수 계산
-- 16타입 결과 판정
-- 결과 링크 복사
-- 공유 링크 재진입 처리
-- 응답 기반 결과 모드 / 공유 결과 모드 분리
-- 결과별 OG 메타데이터 최소 구현
+- 16타입 결과 매핑
+- 공유 링크 생성
+- 공유 결과 모드와 응답 기반 결과 모드 분리
 - 타입별 결과 이미지 연결
+- 결과별 OG 메타데이터 최소 구현
 
-현재 남겨둔 확장 구조:
-- 공유 카드용 카피 데이터
-- 공유 카드 UI 컴포넌트
-- 타입별 컬러 테마 매핑
-- OG 메타데이터 확장 구조
-
-## 홈 화면 방향
-
-현재 홈 화면은 설명형 랜딩보다 `초간단 시작 화면`에 가깝게 정리되어 있습니다.
-
-- 짧은 서비스 소개
-- 큰 `테스트 시작하기` CTA
-- 결과 맛보기 1개
-- 짧은 안내 문구
-
-긴 축 설명 블록은 홈에서 제거했습니다.
+현재 결과 페이지에는 아래가 포함됩니다.
+- 타입 코드 / 타입명 / 설명
+- 4축 요약
+- 강점 / 주의점 / 자주 보이는 습관
+- 참고용 안내 문구
+- 링크 복사 / 공유 문구 복사 / 다시 테스트하기
 
 ## 재시작 규칙
 
-새 테스트를 시작해야 하는 CTA는 모두 `/quiz?reset=1`로 진입합니다.
+새 테스트를 시작하는 CTA는 모두 `/quiz?reset=1`로 진입합니다.
 
-이 경로로 들어오면 퀴즈 페이지에서:
+이 경로로 들어가면:
 - 기존 localStorage 답변을 비우고
 - 진행 상태를 초기화한 뒤
-- 반드시 q01부터 시작합니다
+- 반드시 q01부터 새로 시작합니다.
 
-적용된 위치:
+적용 위치:
 - 홈의 `테스트 시작하기`
 - 헤더의 `테스트 시작`
 - 결과 페이지의 `다시 테스트하기`
-- 공유 결과 모드에서의 `다시 테스트하기`
-- 잘못된 결과 링크 복구 화면의 `테스트 다시 시작`
+- 공유 결과 모드의 `다시 테스트하기`
 
 ## 결과 공유 구조
 
 결과 페이지는 두 가지 모드로 동작합니다.
 
 1. 응답 기반 결과 모드
-- 진입 예시: `/result?code=PTIC&answers=...`
-- 실제 20문항 응답을 다시 읽어 결과를 보여줍니다.
-- 4축 카드에서 응답 비율 기반 위치를 보여줍니다.
+- 예: `/result?code=PTIC&answers=...`
+- 실제 응답을 바탕으로 4축 요약과 비율을 보여줍니다.
 
 2. 공유 결과 모드
-- 진입 예시: `/result?code=PTIC`
-- 타입 코드만으로 복원 가능한 정보만 보여줍니다.
-- 실제 응답이 없으므로 세부 강도 해석은 숨깁니다.
+- 예: `/result?code=PTIC`
+- 타입 코드만으로 재현 가능한 정보만 보여줍니다.
+- 실제 응답이 없으므로 세부 강도는 표시하지 않습니다.
 
 ## OG 메타데이터 상태
 
-현재는 결과 페이지에서 타입 코드에 따라 아래 메타데이터를 동적으로 생성합니다.
-
+현재 결과 페이지는 타입 코드에 따라 아래 메타데이터를 동적으로 생성합니다.
 - `title`
 - `description`
 - `openGraph`
 - `twitter`
 
-현재 OG 이미지는 전용 OG 이미지가 아니라 기존 결과 이미지를 재사용합니다.
-
 관련 파일:
 - `src/app/result/page.tsx`
 - `src/lib/result-og.ts`
-- `src/lib/result-images.ts`
 - `src/data/result-share-copy.ts`
 
-주의:
-- 구조는 구현되어 있지만, 공개 URL 기준 외부 메신저/소셜 미리보기 실검증은 아직 필요합니다.
+## 결과 이미지 에셋
 
-## 프로젝트 구조
+타입별 결과 이미지는 아래 경로에 있습니다.
 
-핵심 폴더:
+- `public/results/ALRD.png`
+- `public/results/ALRC.png`
+- `...`
+- `public/results/PTIC.png`
 
-- `src/app`
-  - 라우트와 페이지
-- `src/components`
-  - 화면 구성 컴포넌트
-- `src/data`
-  - 질문, 축, 타입 데이터, 공유 카피
-- `src/domain`
-  - 타입 정의, 점수 계산 로직
-- `src/lib`
-  - URL, storage, OG, 이미지 경로 등 공용 유틸
-- `public/results`
-  - 타입별 결과 이미지 16종
-- `docs/planning`
-  - PRD, IA, 타입 시스템, 질문 설계, 브랜딩 문서
-- `docs/assets`
-  - 결과 이미지 프롬프트 기록
+이미지 생성 프롬프트 기록:
+- `docs/assets/result-image-prompts.md`
+
+## AdSense 1차 계획
+
+현재 코드베이스에는 AdSense 구현 뼈대가 들어가 있습니다.
+
+원칙:
+- 1차 광고 위치는 `결과 페이지 최하단 1개 슬롯`
+- `/quiz`, `/calculating`에는 광고를 넣지 않음
+- 광고는 결과 해석과 공유 CTA가 끝난 뒤에만 노출
+
+관련 파일:
+- `src/lib/ads.ts`
+- `src/components/ads/adsense-script.tsx`
+- `src/components/ads/ad-slot.tsx`
+- `src/components/result/result-ad-section.tsx`
 
 ## 실행 방법
 
@@ -139,7 +124,7 @@ npm run dev
 
 브라우저에서 `http://localhost:3000`으로 접속합니다.
 
-PowerShell 환경에서 `npm` 실행이 막히면 아래처럼 실행할 수 있습니다.
+PowerShell에서 `npm` 실행이 막히면:
 
 ```powershell
 npm.cmd install
@@ -157,69 +142,50 @@ npm run build
 - `npm run lint` 통과
 - `npm run build` 통과
 
-## 환경 변수
+## 환경변수
 
-배포 전에는 실제 도메인을 아래 환경 변수 중 하나로 설정해야 합니다.
+기본 예시는 `.env.example`에 있습니다.
 
-- `NEXT_PUBLIC_SITE_URL`
-- `SITE_URL`
-
-기본 예시는 아래 파일에 있습니다.
-
-- `.env.example`
-
-예시:
+주요 변수:
 
 ```env
-NEXT_PUBLIC_SITE_URL=https://gaemitype.example.com
+NEXT_PUBLIC_SITE_URL=https://your-domain.example.com
+NEXT_PUBLIC_ENABLE_ADS=false
+NEXT_PUBLIC_ADSENSE_CLIENT=ca-pub-xxxxxxxxxxxxxxxx
+NEXT_PUBLIC_ADSENSE_RESULT_SLOT=1234567890
 ```
 
-## 결과 이미지 에셋
+설명:
+- `NEXT_PUBLIC_SITE_URL`: 배포 도메인
+- `NEXT_PUBLIC_ENABLE_ADS`: 광고 on/off
+- `NEXT_PUBLIC_ADSENSE_CLIENT`: AdSense client ID
+- `NEXT_PUBLIC_ADSENSE_RESULT_SLOT`: 결과 페이지 하단 슬롯 ID
 
-타입별 결과 이미지는 아래 경로에 있습니다.
+## 프로젝트 구조
 
-- `public/results/ALRD.png`
-- `public/results/ALRC.png`
-- `...`
-- `public/results/PTIC.png`
+- `src/app`: 라우팅 페이지
+- `src/components`: UI 컴포넌트
+- `src/components/ads`: 광고 관련 컴포넌트
+- `src/data`: 질문, 축, 결과, 공유 카피 데이터
+- `src/domain`: 타입 정의와 점수 계산 로직
+- `src/lib`: storage, OG, 이미지 경로, 광고 설정 등 공용 유틸
+- `public/results`: 타입별 결과 이미지
+- `docs/planning`: PRD, IA, 타입 시스템, 광고 기획 문서
+- `docs/assets`: 이미지 프롬프트 문서
 
-이미지 생성 프롬프트 기록 문서:
-- `docs/assets/result-image-prompts.md`
+## 배포 체크리스트
 
-## 배포 전 체크리스트
-
-- `NEXT_PUBLIC_SITE_URL` 또는 `SITE_URL` 실제 도메인으로 설정
+- `NEXT_PUBLIC_SITE_URL` 실제 도메인으로 설정
 - `npm run lint` 통과 확인
 - `npm run build` 통과 확인
-- `/quiz` 20문항 완주 후 결과 진입 확인
+- `/quiz` 완주 후 결과 진입 확인
 - `/result?code=...` 직접 진입 확인
-- 공유 결과 모드에서 과한 상세 강도 표현이 없는지 확인
-- 링크 복사 / 공유 문구 복사 버튼 동작 확인
-- 모바일에서 질문 화면과 결과 화면 가독성 확인
-- 실제 메신저 1종에서 OG title / description / image 확인
+- 공유 결과 모드에서 세부 강도가 숨겨지는지 확인
+- 모바일에서 결과 페이지 가독성 확인
+- 실제 메신저에서 OG title / description / image 확인
 
-## 수동 QA 체크리스트
+## 알려진 점
 
-- 홈에서 서비스 목적이 바로 이해되는지 확인
-- 질문 화면에서 긴 문장과 보기 줄바꿈이 자연스러운지 확인
-- `테스트 시작하기`와 `다시 테스트하기`가 항상 q01부터 시작하는지 확인
-- 결과 페이지 상단 카드가 모바일에서 과하게 크지 않은지 확인
-- 4축 결과 카드의 점 위치가 응답 비율과 맞는지 확인
-- 잘못된 `code`로 결과 페이지 진입 시 복구 경로가 보이는지 확인
-- 공유 링크를 새 브라우저 창에서 열었을 때 정상 동작하는지 확인
-
-## 현재 알려진 점
-
-- Windows 로컬 환경에서 Next SWC 관련 경고가 출력될 수 있습니다.
-- dev 서버에서 `.next` 캐시가 꼬이면 일시적 chunk 누락 오류가 생길 수 있어, 필요 시 `.next` 정리가 필요합니다.
-- 자동 테스트 코드는 아직 없습니다.
-- OG 구조는 구현되어 있지만 외부 공유 미리보기 실검증은 아직 필요합니다.
-
-## 다음 우선순위
-
-현재 시점에서 새 기능보다 우선인 일:
-- 실제 공유 링크 / OG 미리보기 검증
-- 모바일 실기기 QA
-- 점수 계산 로직 최소 테스트 추가
-- 배포 환경 설정 확정
-- 카피 최종 검수
+- 로컬 Windows 환경에서 Next SWC 관련 경고가 보일 수 있습니다.
+- 광고는 환경변수가 없으면 렌더되지 않습니다.
+- OG 구조는 구현돼 있지만 실제 메신저별 미리보기 확인은 별도 QA가 필요합니다.
