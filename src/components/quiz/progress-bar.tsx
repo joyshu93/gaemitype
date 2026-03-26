@@ -1,10 +1,11 @@
 type ProgressBarProps = {
-  current: number;
+  stepIndex: number;
   total: number;
 };
 
-export function ProgressBar({ current, total }: ProgressBarProps) {
-  const value = Math.round((current / total) * 100);
+export function ProgressBar({ stepIndex, total }: ProgressBarProps) {
+  const current = stepIndex + 1;
+  const value = Math.round((stepIndex / total) * 100);
 
   return (
     <div className="space-y-2">

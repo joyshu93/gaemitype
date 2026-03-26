@@ -3,12 +3,14 @@ import type { Question } from "@/domain/types";
 type QuestionCardProps = {
   question: Question;
   selectedValue?: 0 | 1;
+  disabled?: boolean;
   onSelect: (value: 0 | 1) => void;
 };
 
 export function QuestionCard({
   question,
   selectedValue,
+  disabled = false,
   onSelect
 }: QuestionCardProps) {
   return (
@@ -26,12 +28,13 @@ export function QuestionCard({
             <button
               key={option.value}
               type="button"
+              disabled={disabled}
               onClick={() => onSelect(option.value)}
               className={`rounded-2xl border px-4 py-4 text-left text-base transition ${
                 active
                   ? "border-ink bg-ink text-white"
                   : "border-ink/10 bg-sand/60 text-ink hover:border-ink/30 hover:bg-sand"
-              }`}
+              } disabled:cursor-not-allowed disabled:opacity-80`}
             >
               {option.label}
             </button>
