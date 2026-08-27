@@ -5,15 +5,17 @@
 이 문서는 개미타입 결과 페이지에 광고를 붙일 때 필요한
 `최소 구현 구조`와 `배치 기준`을 정리한다.
 
-목표는 광고를 결과 경험과 분리하고, 나중에 실제 구현할 때
-과도한 재설계 없이 바로 적용할 수 있게 만드는 것이다.
+목표는 광고를 결과 경험과 분리하고, 현재 구현의 운영 기준을 명확히 하는 것이다.
 
 ## 1차 적용 범위
 
 - 적용 페이지: `/result`
 - 배치 수: 1개
 - 배치 위치: 결과 페이지 최하단
-- 1차 광고 네트워크 가정: Google AdSense
+- 배치 식별자: `result-footer`
+- 광고 네트워크: Google AdSense
+
+2026-08-27 기준 Google AdSense 선택과 `gaemitype.vercel.app` 사이트 소유권 확인은 완료됐다. 사이트 심사는 대기 중이며, 광고 슬롯은 비활성 상태다.
 
 ## 배치 원칙
 
@@ -53,30 +55,34 @@
   - 광고 슬롯 자체 패딩/배경은 최소
 - 모바일에서 첫 화면을 차지하지 않게 제한
 
-## 컴포넌트 구조 제안
+## 구현 구조
 
-### 1차 컴포넌트
+### 사용 파일
 
 - `src/components/ads/ad-slot.tsx`
-- `src/components/ads/adsense-script.tsx`
+- `src/components/result/result-ad-section.tsx`
+- `src/lib/ads.ts`
+- `src/app/layout.tsx`
 
 ### 책임
 
-`AdsenseScript`
-- AdSense 스크립트 로드
-- 중복 삽입 방지
-- `next/script` 사용
+`layout.tsx`
+- `NEXT_PUBLIC_ADSENSE_CLIENT`가 있으면 모든 페이지에 `google-adsense-account` meta와 async AdSense 스크립트를 로드
+- 이 전역 로드는 사이트 소유권 확인용이며, 광고 슬롯을 직접 렌더하지 않음
 
 `AdSlot`
 - placement별 광고 렌더링
 - 최소 높이 유지
-- 광고 차단/미로드 시 fallback 처리
-- 광고 on/off 환경변수 체크
+- 초기화 예외가 발생해도 결과 페이지 렌더링 유지
+- `canRenderAdPlacement` 결과가 참일 때만 AdSense `ins` 요소 렌더링
+
+`ResultAdSection`
+- `result-footer`가 렌더 가능한 경우에만 결과 최하단의 광고 라벨과 슬롯 컨테이너를 렌더링
 
 ## props 제안
 
 ```ts
-type AdPlacement = "result-footer" | "home-footer";
+type AdPlacement = "result-footer";
 
 type AdSlotProps = {
   placement: AdPlacement;
@@ -91,26 +97,25 @@ type AdSlotProps = {
 NEXT_PUBLIC_ENABLE_ADS=false
 NEXT_PUBLIC_ADSENSE_CLIENT=ca-pub-xxxxxxxxxxxxxxxx
 NEXT_PUBLIC_ADSENSE_RESULT_SLOT=1234567890
-NEXT_PUBLIC_ADSENSE_HOME_SLOT=0987654321
 ```
 
 ### 역할
 
 - `NEXT_PUBLIC_ENABLE_ADS`
-  - 전체 광고 on/off 제어
+  - 정확히 `true`일 때 광고 슬롯 노출 허용
 - `NEXT_PUBLIC_ADSENSE_CLIENT`
   - AdSense client ID
+  - 값이 있으면 전역 layout에서 소유권 확인용 meta와 스크립트를 로드
 - `NEXT_PUBLIC_ADSENSE_RESULT_SLOT`
-  - 결과 페이지 하단 슬롯 ID
-- `NEXT_PUBLIC_ADSENSE_HOME_SLOT`
-  - 차후 홈 하단 슬롯 ID
+  - 결과 페이지 최하단 `result-footer` 슬롯 ID
+
+결과 하단 슬롯은 `NEXT_PUBLIC_ENABLE_ADS=true`, 유효한 `NEXT_PUBLIC_ADSENSE_CLIENT`, `NEXT_PUBLIC_ADSENSE_RESULT_SLOT`이 모두 있을 때만 렌더된다. 현재 심사 대기 상태에서는 `NEXT_PUBLIC_ENABLE_ADS=false`로 유지한다.
 
 ## 페이지별 include / exclude
 
 ### include
 
 - `/result`
-- 차후 필요 시 `/`
 
 ### exclude
 
@@ -120,17 +125,15 @@ NEXT_PUBLIC_ADSENSE_HOME_SLOT=0987654321
 
 ## 스크립트 삽입 방식
 
-### 권장안
+### 현재 구현
 
-- 전역 layout 삽입보다 결과/홈에서만 조건부 삽입
-- `next/script`
-- 전략: `afterInteractive` 또는 `lazyOnload`
+- `src/app/layout.tsx`가 `NEXT_PUBLIC_ADSENSE_CLIENT` 존재 여부만 확인해 전역 `<head>`에 meta와 async AdSense 스크립트를 삽입한다.
+- `NEXT_PUBLIC_ENABLE_ADS=false`는 광고 슬롯 렌더링만 막으며, client ID가 설정된 경우 소유권 확인용 전역 스크립트는 유지된다.
 
 ### 이유
 
-- 질문 플로우에는 광고 스크립트 영향도 배제
-- 초기 렌더링 성능 보호
-- 광고 스크립트 로딩 범위 최소화
+- 사이트 소유권 확인은 심사 기간에도 유지해야 한다.
+- 광고 노출 여부는 결과 페이지의 단일 슬롯에서 독립적으로 제어한다.
 
 ## CLS / 성능 대응
 
@@ -146,17 +149,13 @@ NEXT_PUBLIC_ADSENSE_HOME_SLOT=0987654321
 
 ### 광고 off
 
-- 아무것도 렌더하지 않음
+- 결과 광고 섹션과 `ins` 슬롯을 렌더하지 않음
 
-### 광고 차단기
+### 광고 차단기 / 미승인 / 미로드
 
-- 빈 슬롯 대신 높이 유지용 래퍼만 남김
-- 레이아웃 붕괴 방지
-
-### 광고 미승인/미로드
-
-- placeholder 문구 없이 조용히 숨기거나
-- 내부 개발 모드에서만 debug label 표시
+- 현재 구현은 광고 요청 실패나 차단을 감지해 슬롯을 숨기지 않음
+- 렌더 조건이 충족된 상태라면 광고 라벨과 컨테이너, `minHeight`가 적용된 고정 높이 빈 영역이 남을 수 있음
+- 빈 영역의 크기와 표시 상태는 브라우저 및 광고 차단 환경별 수동 QA 대상
 
 ## 공유 결과 모드 주의사항
 
@@ -166,12 +165,11 @@ NEXT_PUBLIC_ADSENSE_HOME_SLOT=0987654321
 
 ## 1차 구현 순서
 
-1. 환경변수 설계
-2. `AdsenseScript` 추가
-3. `AdSlot` 컴포넌트 추가
-4. `/result` 최하단 삽입
-5. 광고 라벨/간격 정리
-6. 모바일 및 광고 차단기 QA
+1. `NEXT_PUBLIC_ADSENSE_CLIENT`를 설정해 소유권 확인 meta와 전역 스크립트를 로드한다.
+2. AdSense 콘솔에서 사이트 심사 및 결과 슬롯 발급을 완료한다.
+3. `NEXT_PUBLIC_ADSENSE_RESULT_SLOT`을 설정한다.
+4. `NEXT_PUBLIC_ENABLE_ADS=true`로 변경해 `result-footer`만 활성화한다.
+5. 모바일 및 광고 차단기 QA를 진행한다.
 
 ## 수동 QA 체크리스트
 

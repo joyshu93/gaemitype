@@ -16,12 +16,16 @@
 
 `홈 -> 20문항 질문 -> 계산 -> 결과 -> 링크 공유`
 
+배포 주소: [https://gaemitype.vercel.app](https://gaemitype.vercel.app)
+
 ## 기술 스택
 
-- Next.js App Router
+- Next.js 16.3.3 App Router
+- React 19.1.0
 - TypeScript
 - Tailwind CSS
 - 정적 데이터 기반 구조
+- Node.js 24.x
 - Vercel 배포
 
 ## 현재 구현 상태
@@ -32,6 +36,8 @@
 - 계산 페이지
 - 결과 페이지
 - 20문항 1문항 1화면 진행
+- 선택지 선택 시 다음 문항으로 자동 이동
+- 첫 문항 0%부터 마지막 문항 95%까지 표시하는 진행률
 - localStorage 기반 답변 저장/복원
 - 4축 점수 계산
 - 16타입 결과 매핑
@@ -47,6 +53,17 @@
 - 참고용 안내 문구
 - 링크 복사 / 공유 문구 복사 / 다시 테스트하기
 
+## 질문 진행 규칙
+
+- 질문은 총 20문항이며 한 화면에 한 문항만 표시합니다.
+- 선택지를 누르면 답변을 즉시 저장하고 다음 문항으로 이동합니다.
+- 마지막 문항의 선택지를 누르면 계산 페이지로 자동 이동합니다.
+- 이전 버튼으로 앞 문항에 돌아가 답변을 다시 선택할 수 있습니다.
+- 진행률은 답변 완료율이 아니라 현재 문항 진입 시점을 기준으로 표시합니다.
+  - 첫 문항: `0%`
+  - 마지막 문항: `95%`
+  - 마지막 답변 선택 후 계산 단계로 이동하며 질문 과정이 완료됩니다.
+
 ## 재시작 규칙
 
 새 테스트를 시작하는 CTA는 모두 `/quiz?reset=1`로 진입합니다.
@@ -55,6 +72,8 @@
 - 기존 localStorage 답변을 비우고
 - 진행 상태를 초기화한 뒤
 - 반드시 q01부터 새로 시작합니다.
+
+퀴즈 화면 안의 `처음부터` 버튼도 같은 초기화 규칙을 적용합니다. 현재 URL은 유지한 채 localStorage 답변을 비우고, 메모리 답변을 초기화하며, 진행 인덱스를 `0`으로 되돌려 q01을 표시합니다.
 
 적용 위치:
 - 홈의 `테스트 시작하기`
@@ -100,18 +119,30 @@
 이미지 생성 프롬프트 기록:
 - `docs/assets/result-image-prompts.md`
 
-## AdSense 1차 계획
+## AdSense 적용 상태
 
-현재 코드베이스에는 AdSense 구현 뼈대가 들어가 있습니다.
+현재 코드베이스에는 AdSense 소유권 확인 코드와 결과 페이지 광고 슬롯 구조가 들어가 있습니다.
 
 원칙:
 - 1차 광고 위치는 `결과 페이지 최하단 1개 슬롯`
 - `/quiz`, `/calculating`에는 광고를 넣지 않음
 - 광고는 결과 해석과 공유 CTA가 끝난 뒤에만 노출
 
+현재 운영 상태(2026-08-27 기준):
+- Google AdSense 선택 완료
+- `gaemitype.vercel.app` 사이트 소유권 확인 완료
+- AdSense 사이트 검토 요청 완료 및 승인 대기 중
+- 심사 대기 중 광고 슬롯은 비활성 상태이며 `NEXT_PUBLIC_ENABLE_ADS=false` 유지
+- 승인 후 광고 단위의 슬롯 ID를 발급받아 결과 페이지 슬롯만 활성화
+
+환경변수의 실제 역할:
+- `NEXT_PUBLIC_ADSENSE_CLIENT`가 있으면 전역 layout이 소유권 확인용 meta와 AdSense 스크립트를 로드합니다.
+- 결과 하단 `result-footer` 슬롯은 `NEXT_PUBLIC_ENABLE_ADS=true`, 유효한 `NEXT_PUBLIC_ADSENSE_CLIENT`, `NEXT_PUBLIC_ADSENSE_RESULT_SLOT`이 모두 있어야 렌더됩니다.
+- `NEXT_PUBLIC_ENABLE_ADS=false`는 광고 슬롯 노출만 비활성화하며, client ID가 설정된 경우 전역 확인 스크립트는 유지됩니다.
+
 관련 파일:
+- `src/app/layout.tsx`
 - `src/lib/ads.ts`
-- `src/components/ads/adsense-script.tsx`
 - `src/components/ads/ad-slot.tsx`
 - `src/components/result/result-ad-section.tsx`
 
@@ -149,7 +180,7 @@ npm run build
 주요 변수:
 
 ```env
-NEXT_PUBLIC_SITE_URL=https://your-domain.example.com
+NEXT_PUBLIC_SITE_URL=https://gaemitype.vercel.app
 NEXT_PUBLIC_ENABLE_ADS=false
 NEXT_PUBLIC_ADSENSE_CLIENT=ca-pub-xxxxxxxxxxxxxxxx
 NEXT_PUBLIC_ADSENSE_RESULT_SLOT=1234567890
@@ -157,9 +188,11 @@ NEXT_PUBLIC_ADSENSE_RESULT_SLOT=1234567890
 
 설명:
 - `NEXT_PUBLIC_SITE_URL`: 배포 도메인
-- `NEXT_PUBLIC_ENABLE_ADS`: 광고 on/off
+- `NEXT_PUBLIC_ENABLE_ADS`: 결과 페이지 하단 광고 슬롯 노출 on/off
 - `NEXT_PUBLIC_ADSENSE_CLIENT`: AdSense client ID
 - `NEXT_PUBLIC_ADSENSE_RESULT_SLOT`: 결과 페이지 하단 슬롯 ID
+
+현재 Vercel의 `NEXT_PUBLIC_SITE_URL`은 `https://gaemitype.vercel.app`으로 설정합니다. 실제 환경 변수 값은 저장소에 커밋하지 않고 Vercel 프로젝트 설정에서 관리합니다.
 
 ## 프로젝트 구조
 
@@ -176,8 +209,14 @@ NEXT_PUBLIC_ADSENSE_RESULT_SLOT=1234567890
 ## 배포 체크리스트
 
 - `NEXT_PUBLIC_SITE_URL` 실제 도메인으로 설정
+- 배포 환경의 Node.js 버전이 24.x인지 확인
 - `npm run lint` 통과 확인
 - `npm run build` 통과 확인
+- 첫 문항 진행률이 0%, 마지막 문항 진행률이 95%인지 확인
+- 선택지 선택 시 다음 문항으로 자동 이동하는지 확인
+- 마지막 답변 선택 후 계산 페이지로 이동하는지 확인
+- 이전 버튼으로 돌아가 답변을 변경할 수 있는지 확인
+- 퀴즈 화면의 `처음부터` 버튼이 localStorage 답변을 비우고 q01 및 진행률 `0%`로 돌아가는지 확인
 - `/quiz` 완주 후 결과 진입 확인
 - `/result?code=...` 직접 진입 확인
 - 공유 결과 모드에서 세부 강도가 숨겨지는지 확인
@@ -187,5 +226,6 @@ NEXT_PUBLIC_ADSENSE_RESULT_SLOT=1234567890
 ## 알려진 점
 
 - 로컬 Windows 환경에서 Next SWC 관련 경고가 보일 수 있습니다.
-- 광고는 환경변수가 없으면 렌더되지 않습니다.
+- 광고는 승인 후 슬롯 ID와 활성화 환경변수가 모두 설정돼야 렌더됩니다.
+- AdSense 검토 상태는 외부 서비스 상태이므로 이 문서의 기준 날짜보다 실제 콘솔 상태를 우선합니다.
 - OG 구조는 구현돼 있지만 실제 메신저별 미리보기 확인은 별도 QA가 필요합니다.
