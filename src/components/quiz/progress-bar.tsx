@@ -15,7 +15,14 @@ export function ProgressBar({ stepIndex, total }: ProgressBarProps) {
         </span>
         <span>{value}%</span>
       </div>
-      <div className="h-2 overflow-hidden rounded-full bg-ink/10">
+      <div
+        className="h-2 overflow-hidden rounded-full bg-ink/10"
+        role="progressbar"
+        aria-label="테스트 진행률"
+        aria-valuemin={0}
+        aria-valuemax={100}
+        aria-valuenow={value}
+      >
         <div
           className="h-full rounded-full bg-coral transition-all duration-300"
           style={{ width: `${value}%` }}

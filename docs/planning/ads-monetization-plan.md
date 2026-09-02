@@ -97,32 +97,35 @@
 
 - 결과 페이지 최하단 광고 슬롯 1개
 - 광고 on/off 환경변수
-- 소유권 확인용 전역 meta 및 AdSense 스크립트
+- 소유권 확인용 전역 meta
+- 결과 광고 슬롯이 활성화된 경우에만 로드하는 AdSense 스크립트
 - 광고 라벨 명시
 - 광고 차단기/미로드 상태 fallback
 - 모바일 레이아웃 점검
 
 ## 현재 운영 상태
 
-2026-08-27 기준:
+2026-09-02 기준:
 
 - Google AdSense 선택 완료
 - `gaemitype.vercel.app` 사이트 소유권 확인 완료
-- 사이트 심사 대기 중
+- 첫 사이트 심사에서 `게시자 콘텐츠가 없는 화면 / 가치가 별로 없는 콘텐츠` 사유로 보완 요청
+- 서비스 소개, 개인정보처리방침, robots, sitemap, ads.txt 보강 후 재심사 예정
 - 광고 슬롯은 비활성 상태
 
-심사 중에는 `NEXT_PUBLIC_ENABLE_ADS=false`를 유지해 결과 하단 슬롯을 렌더하지 않는다. 다만 `NEXT_PUBLIC_ADSENSE_CLIENT`가 설정되어 있으면 소유권 확인을 위해 전역 meta와 AdSense 스크립트는 계속 로드한다.
+재심사 전에는 `NEXT_PUBLIC_ENABLE_ADS=false`를 유지해 결과 하단 슬롯과 광고 요청 스크립트를 렌더하지 않는다. `NEXT_PUBLIC_ADSENSE_CLIENT`가 설정되어 있으면 소유권 확인을 위해 전역 meta만 유지한다.
 
 ## 환경변수와 실제 역할
 
 - `NEXT_PUBLIC_ADSENSE_CLIENT`
-  - 값이 있으면 `src/app/layout.tsx`가 모든 페이지에 `google-adsense-account` meta와 AdSense 스크립트를 로드한다.
-  - 소유권 확인용 설정이며, 이 값만으로 광고 슬롯은 표시되지 않는다.
+  - 값이 있으면 `src/app/layout.tsx`가 모든 페이지에 `google-adsense-account` meta를 로드한다.
+  - 이 값만으로 광고 슬롯이나 광고 요청 스크립트는 표시되지 않는다.
 - `NEXT_PUBLIC_ENABLE_ADS`
   - 값이 정확히 `true`일 때 광고 슬롯 노출을 허용한다.
 - `NEXT_PUBLIC_ADSENSE_RESULT_SLOT`
   - 결과 페이지 최하단 `result-footer`의 AdSense 슬롯 ID다.
   - `NEXT_PUBLIC_ENABLE_ADS=true`, 유효한 `NEXT_PUBLIC_ADSENSE_CLIENT`, 이 슬롯 ID가 모두 있어야 결과 페이지 최하단 광고 슬롯이 렌더된다.
+  - 위 조건이 충족된 결과 페이지에서만 AdSense 스크립트를 함께 로드한다.
 
 ## 성공 판단 기준
 

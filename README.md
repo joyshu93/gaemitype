@@ -32,6 +32,8 @@
 
 구현 완료:
 - 홈 화면
+- 서비스 소개 페이지
+- 개인정보처리방침 페이지
 - 질문 플로우
 - 계산 페이지
 - 결과 페이지
@@ -45,6 +47,7 @@
 - 공유 결과 모드와 응답 기반 결과 모드 분리
 - 타입별 결과 이미지 연결
 - 결과별 OG 메타데이터 최소 구현
+- robots / sitemap / ads.txt
 
 현재 결과 페이지에는 아래가 포함됩니다.
 - 타입 코드 / 타입명 / 설명
@@ -128,17 +131,18 @@
 - `/quiz`, `/calculating`에는 광고를 넣지 않음
 - 광고는 결과 해석과 공유 CTA가 끝난 뒤에만 노출
 
-현재 운영 상태(2026-08-27 기준):
+현재 운영 상태(2026-09-02 기준):
 - Google AdSense 선택 완료
 - `gaemitype.vercel.app` 사이트 소유권 확인 완료
-- AdSense 사이트 검토 요청 완료 및 승인 대기 중
-- 심사 대기 중 광고 슬롯은 비활성 상태이며 `NEXT_PUBLIC_ENABLE_ADS=false` 유지
-- 승인 후 광고 단위의 슬롯 ID를 발급받아 결과 페이지 슬롯만 활성화
+- 첫 사이트 검토에서 `게시자 콘텐츠가 없는 화면 / 가치가 별로 없는 콘텐츠` 사유로 보완 요청
+- 서비스 소개, 개인정보처리방침, 크롤링 설정, `ads.txt`를 보강해 재심사 준비 중
+- 승인 전까지 광고 슬롯은 비활성 상태이며 `NEXT_PUBLIC_ENABLE_ADS=false` 유지
 
 환경변수의 실제 역할:
-- `NEXT_PUBLIC_ADSENSE_CLIENT`가 있으면 전역 layout이 소유권 확인용 meta와 AdSense 스크립트를 로드합니다.
+- `NEXT_PUBLIC_ADSENSE_CLIENT`가 있으면 전역 layout은 소유권 확인용 meta만 로드합니다.
 - 결과 하단 `result-footer` 슬롯은 `NEXT_PUBLIC_ENABLE_ADS=true`, 유효한 `NEXT_PUBLIC_ADSENSE_CLIENT`, `NEXT_PUBLIC_ADSENSE_RESULT_SLOT`이 모두 있어야 렌더됩니다.
-- `NEXT_PUBLIC_ENABLE_ADS=false`는 광고 슬롯 노출만 비활성화하며, client ID가 설정된 경우 전역 확인 스크립트는 유지됩니다.
+- AdSense 광고 스크립트도 위 조건이 충족된 결과 페이지에서만 로드됩니다.
+- `NEXT_PUBLIC_ENABLE_ADS=false`일 때 광고 슬롯과 광고 요청 스크립트는 모두 로드되지 않습니다.
 
 관련 파일:
 - `src/app/layout.tsx`
@@ -166,6 +170,7 @@ npm.cmd run dev
 
 ```bash
 npm run lint
+npm test
 npm run build
 ```
 
@@ -203,6 +208,7 @@ NEXT_PUBLIC_ADSENSE_RESULT_SLOT=1234567890
 - `src/domain`: 타입 정의와 점수 계산 로직
 - `src/lib`: storage, OG, 이미지 경로, 광고 설정 등 공용 유틸
 - `public/results`: 타입별 결과 이미지
+- `public/ads.txt`: AdSense 승인 판매자 선언
 - `docs/planning`: PRD, IA, 타입 시스템, 광고 기획 문서
 - `docs/assets`: 이미지 프롬프트 문서
 
@@ -211,7 +217,9 @@ NEXT_PUBLIC_ADSENSE_RESULT_SLOT=1234567890
 - `NEXT_PUBLIC_SITE_URL` 실제 도메인으로 설정
 - 배포 환경의 Node.js 버전이 24.x인지 확인
 - `npm run lint` 통과 확인
+- `npm test` 통과 확인
 - `npm run build` 통과 확인
+- `/about`, `/privacy`, `/robots.txt`, `/sitemap.xml`, `/ads.txt` 접근 확인
 - 첫 문항 진행률이 0%, 마지막 문항 진행률이 95%인지 확인
 - 선택지 선택 시 다음 문항으로 자동 이동하는지 확인
 - 마지막 답변 선택 후 계산 페이지로 이동하는지 확인
@@ -228,4 +236,5 @@ NEXT_PUBLIC_ADSENSE_RESULT_SLOT=1234567890
 - 로컬 Windows 환경에서 Next SWC 관련 경고가 보일 수 있습니다.
 - 광고는 승인 후 슬롯 ID와 활성화 환경변수가 모두 설정돼야 렌더됩니다.
 - AdSense 검토 상태는 외부 서비스 상태이므로 이 문서의 기준 날짜보다 실제 콘솔 상태를 우선합니다.
+- 콘텐츠와 정책 페이지 보강이 승인을 보장하지는 않으며, 배포 후 AdSense 재심사가 필요합니다.
 - OG 구조는 구현돼 있지만 실제 메신저별 미리보기 확인은 별도 QA가 필요합니다.

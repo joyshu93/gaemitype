@@ -15,7 +15,7 @@
 - 배치 식별자: `result-footer`
 - 광고 네트워크: Google AdSense
 
-2026-08-27 기준 Google AdSense 선택과 `gaemitype.vercel.app` 사이트 소유권 확인은 완료됐다. 사이트 심사는 대기 중이며, 광고 슬롯은 비활성 상태다.
+2026-09-02 기준 Google AdSense 선택과 `gaemitype.vercel.app` 사이트 소유권 확인은 완료됐다. 첫 심사에서 콘텐츠 가치 관련 보완 요청을 받았으며, 광고 슬롯은 비활성 상태다.
 
 ## 배치 원칙
 
@@ -67,8 +67,8 @@
 ### 책임
 
 `layout.tsx`
-- `NEXT_PUBLIC_ADSENSE_CLIENT`가 있으면 모든 페이지에 `google-adsense-account` meta와 async AdSense 스크립트를 로드
-- 이 전역 로드는 사이트 소유권 확인용이며, 광고 슬롯을 직접 렌더하지 않음
+- `NEXT_PUBLIC_ADSENSE_CLIENT`가 있으면 모든 페이지에 `google-adsense-account` meta만 로드
+- 소유권 확인과 실제 광고 요청을 분리
 
 `AdSlot`
 - placement별 광고 렌더링
@@ -78,6 +78,7 @@
 
 `ResultAdSection`
 - `result-footer`가 렌더 가능한 경우에만 결과 최하단의 광고 라벨과 슬롯 컨테이너를 렌더링
+- 렌더 조건이 충족된 결과 페이지에서만 async AdSense 스크립트를 로드
 
 ## props 제안
 
@@ -105,11 +106,11 @@ NEXT_PUBLIC_ADSENSE_RESULT_SLOT=1234567890
   - 정확히 `true`일 때 광고 슬롯 노출 허용
 - `NEXT_PUBLIC_ADSENSE_CLIENT`
   - AdSense client ID
-  - 값이 있으면 전역 layout에서 소유권 확인용 meta와 스크립트를 로드
+  - 값이 있으면 전역 layout에서 소유권 확인용 meta만 로드
 - `NEXT_PUBLIC_ADSENSE_RESULT_SLOT`
   - 결과 페이지 최하단 `result-footer` 슬롯 ID
 
-결과 하단 슬롯은 `NEXT_PUBLIC_ENABLE_ADS=true`, 유효한 `NEXT_PUBLIC_ADSENSE_CLIENT`, `NEXT_PUBLIC_ADSENSE_RESULT_SLOT`이 모두 있을 때만 렌더된다. 현재 심사 대기 상태에서는 `NEXT_PUBLIC_ENABLE_ADS=false`로 유지한다.
+결과 하단 슬롯과 광고 요청 스크립트는 `NEXT_PUBLIC_ENABLE_ADS=true`, 유효한 `NEXT_PUBLIC_ADSENSE_CLIENT`, `NEXT_PUBLIC_ADSENSE_RESULT_SLOT`이 모두 있을 때만 렌더된다. 재심사 준비 중에는 `NEXT_PUBLIC_ENABLE_ADS=false`로 유지한다.
 
 ## 페이지별 include / exclude
 
@@ -127,13 +128,14 @@ NEXT_PUBLIC_ADSENSE_RESULT_SLOT=1234567890
 
 ### 현재 구현
 
-- `src/app/layout.tsx`가 `NEXT_PUBLIC_ADSENSE_CLIENT` 존재 여부만 확인해 전역 `<head>`에 meta와 async AdSense 스크립트를 삽입한다.
-- `NEXT_PUBLIC_ENABLE_ADS=false`는 광고 슬롯 렌더링만 막으며, client ID가 설정된 경우 소유권 확인용 전역 스크립트는 유지된다.
+- `src/app/layout.tsx`는 `NEXT_PUBLIC_ADSENSE_CLIENT`가 있으면 전역 `<head>`에 소유권 확인 meta만 삽입한다.
+- `src/components/result/result-ad-section.tsx`가 광고 슬롯 렌더 조건을 확인하고, 조건이 충족될 때만 결과 페이지에서 async AdSense 스크립트와 슬롯을 렌더한다.
+- `NEXT_PUBLIC_ENABLE_ADS=false`이면 광고 슬롯과 광고 요청 스크립트를 모두 렌더하지 않는다.
 
 ### 이유
 
-- 사이트 소유권 확인은 심사 기간에도 유지해야 한다.
-- 광고 노출 여부는 결과 페이지의 단일 슬롯에서 독립적으로 제어한다.
+- 사이트 소유권 확인 meta는 심사 기간에도 유지한다.
+- 광고 요청은 콘텐츠가 충분한 결과 페이지의 단일 슬롯에서만 실행한다.
 
 ## CLS / 성능 대응
 
@@ -165,11 +167,12 @@ NEXT_PUBLIC_ADSENSE_RESULT_SLOT=1234567890
 
 ## 1차 구현 순서
 
-1. `NEXT_PUBLIC_ADSENSE_CLIENT`를 설정해 소유권 확인 meta와 전역 스크립트를 로드한다.
-2. AdSense 콘솔에서 사이트 심사 및 결과 슬롯 발급을 완료한다.
-3. `NEXT_PUBLIC_ADSENSE_RESULT_SLOT`을 설정한다.
-4. `NEXT_PUBLIC_ENABLE_ADS=true`로 변경해 `result-footer`만 활성화한다.
-5. 모바일 및 광고 차단기 QA를 진행한다.
+1. `NEXT_PUBLIC_ADSENSE_CLIENT`를 설정해 소유권 확인 meta를 로드한다.
+2. 소개·개인정보처리방침·robots·sitemap·ads.txt 공개 상태를 확인한다.
+3. AdSense 콘솔에서 사이트 재심사를 요청하고 결과 슬롯 발급을 완료한다.
+4. `NEXT_PUBLIC_ADSENSE_RESULT_SLOT`을 설정한다.
+5. `NEXT_PUBLIC_ENABLE_ADS=true`로 변경해 `result-footer`와 해당 페이지의 스크립트만 활성화한다.
+6. 모바일 및 광고 차단기 QA를 진행한다.
 
 ## 수동 QA 체크리스트
 

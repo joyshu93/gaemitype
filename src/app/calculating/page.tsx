@@ -1,4 +1,13 @@
+import type { Metadata } from "next";
 import { CalculatingRedirect } from "@/components/calculating/calculating-redirect";
+
+export const metadata: Metadata = {
+  title: "결과 계산 중 | 개미타입",
+  robots: {
+    index: false,
+    follow: false
+  }
+};
 
 type CalculatingPageProps = {
   searchParams: Promise<{

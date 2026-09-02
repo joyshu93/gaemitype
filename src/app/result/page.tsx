@@ -23,13 +23,20 @@ export async function generateMetadata({
   return {
     title: meta.title,
     description: meta.description,
+    alternates: {
+      canonical: meta.url
+    },
+    robots: {
+      index: Boolean(meta.imageUrl),
+      follow: Boolean(meta.imageUrl)
+    },
     openGraph: {
       title: meta.title,
       description: meta.description,
       type: "website",
       url: meta.url,
       images: meta.imageUrl
-        ? [{ url: meta.imageUrl, width: 1200, height: 630, alt: meta.title }]
+        ? [{ url: meta.imageUrl, width: 1024, height: 1536, alt: meta.title }]
         : undefined
     },
     twitter: {

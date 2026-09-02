@@ -49,8 +49,20 @@ export default function LandingPage() {
       </section>
 
       <section className="mt-6 rounded-[30px] border border-ink/10 bg-white px-6 py-5 text-sm leading-6 text-ink/60">
-        개미타입은 투자 추천 서비스가 아니라, 투자 습관과 판단 성향을 가볍게 돌아보는
-        테스트입니다.
+        <p>
+          개미타입은 정답을 맞히는 검사가 아니라, 일상적인 선택과 상황 반응을 통해
+          나의 판단 습관을 4개의 축과 16개 타입으로 정리해보는 테스트입니다.
+        </p>
+        <p className="mt-2">
+          투자 추천이나 수익 예측은 제공하지 않으며, 결과는 재미와 자기이해를 위한
+          참고용 성향 요약입니다.
+        </p>
+        <Link
+          href="/about"
+          className="mt-3 inline-flex font-medium text-ink underline decoration-coral/50 underline-offset-4"
+        >
+          테스트 방식 자세히 보기
+        </Link>
       </section>
     </div>
   );

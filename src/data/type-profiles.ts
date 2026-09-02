@@ -110,7 +110,7 @@ export const TYPE_PROFILES: TypeProfile[] = [
     code: "ATRC",
     name: "타이밍포착형",
     headline: "순간을 재는 개미",
-    description: "흐름을 민감하게 읽고, 지금 들어갈지 말지 타이밍을 잘 살피는 편이에요.",
+    description: "흐름을 민감하게 읽고, 지금 움직일지 말지 타이밍을 잘 살피는 편이에요.",
     strengths: [
       "순간적인 흐름 변화를 잘 봐요.",
       "지금이 언제인지 감각적으로 잡는 편이에요.",
@@ -125,7 +125,7 @@ export const TYPE_PROFILES: TypeProfile[] = [
       "타이밍에 집중하다 큰 흐름을 놓칠 수 있어요.",
       "순간 판단이 많아지면 스스로 피곤해질 수 있어요."
     ],
-    shareText: "나는 지금 들어갈 순간을 재는 타이밍포착형 개미."
+    shareText: "나는 지금 움직일 순간을 재는 타이밍포착형 개미."
   },
   {
     code: "ATID",
