@@ -17,8 +17,11 @@ export function SiteHeader() {
           >
             테스트 시작
           </Link>
-          <Link href="/" className="inline-flex min-h-11 items-center transition hover:text-ink">
-            홈
+          <Link
+            href="/guides"
+            className="inline-flex min-h-11 items-center transition hover:text-ink"
+          >
+            가이드
           </Link>
         </nav>
       </div>

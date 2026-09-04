@@ -63,6 +63,12 @@ export default function LandingPage() {
         >
           테스트 방식 자세히 보기
         </Link>
+        <Link
+          href="/guides"
+          className="mt-3 ml-4 inline-flex font-medium text-ink underline decoration-coral/50 underline-offset-4"
+        >
+          투자 성향 가이드 읽기
+        </Link>
       </section>
     </div>
   );

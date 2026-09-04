@@ -15,6 +15,9 @@ export function SiteFooter() {
           <Link href="/about" className="inline-flex min-h-10 items-center hover:text-ink">
             서비스 소개
           </Link>
+          <Link href="/guides" className="inline-flex min-h-10 items-center hover:text-ink">
+            가이드
+          </Link>
           <Link href="/privacy" className="inline-flex min-h-10 items-center hover:text-ink">
             개인정보처리방침
           </Link>

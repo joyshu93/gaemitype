@@ -45,6 +45,12 @@ export default function AboutPage() {
             </article>
           ))}
         </div>
+        <Link
+          href="/guides/four-axes"
+          className="mt-6 inline-flex font-medium text-ink underline decoration-coral/50 underline-offset-4"
+        >
+          4가지 판단 축 자세히 보기
+        </Link>
       </section>
 
       <section className="mt-6 grid gap-6 sm:grid-cols-2">
@@ -52,8 +58,8 @@ export default function AboutPage() {
           <h2 className="text-xl font-semibold text-ink">결과는 어떻게 만들어지나요?</h2>
           <p className="mt-4 text-sm leading-7 text-ink/70">
             각 질문의 두 선택지는 하나의 성향 축에 연결됩니다. 20개 답변을 축별로
-            합산하고, 더 자주 선택한 쪽을 조합해 타입 코드를 만듭니다. 동점일 때는
-            미리 정한 일관된 기준을 사용합니다.
+            합산하고, 더 자주 선택한 쪽을 조합해 타입 코드를 만듭니다. 각 축에는 5개
+            문항이 있어 정상적으로 모두 답하면 동점이 생기지 않습니다.
           </p>
         </article>
         <article className="rounded-[30px] bg-white p-7 shadow-card">

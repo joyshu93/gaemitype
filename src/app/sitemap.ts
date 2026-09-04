@@ -1,4 +1,5 @@
 import type { MetadataRoute } from "next";
+import { GUIDES } from "@/data/guides";
 import { TYPE_PROFILES } from "@/data/type-profiles";
 import { getSiteUrl } from "@/lib/site";
 
@@ -16,6 +17,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.8
     },
     {
+      url: `${siteUrl}/guides`,
+      changeFrequency: "monthly",
+      priority: 0.8
+    },
+    {
       url: `${siteUrl}/privacy`,
       changeFrequency: "yearly",
       priority: 0.4
@@ -28,5 +34,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.7
   }));
 
-  return [...staticPages, ...resultPages];
+  const guidePages: MetadataRoute.Sitemap = GUIDES.map((guide) => ({
+    url: `${siteUrl}/guides/${guide.slug}`,
+    changeFrequency: "monthly",
+    priority: 0.7
+  }));
+
+  return [...staticPages, ...resultPages, ...guidePages];
 }

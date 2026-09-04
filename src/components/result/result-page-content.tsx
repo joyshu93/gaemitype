@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { AxisGrid } from "@/components/result/axis-grid";
 import { ResultAdSection } from "@/components/result/result-ad-section";
 import { ResultSummaryCard } from "@/components/result/result-summary-card";
@@ -66,6 +67,12 @@ export function ResultPageContent({ result }: ResultPageContentProps) {
           매수나 매도 신호를 제공하지 않아요.
         </p>
         <div className="mt-6 border-t border-ink/8 pt-6">
+          <Link
+            href="/guides/reading-results"
+            className="inline-flex font-medium text-ink underline decoration-coral/50 underline-offset-4"
+          >
+            내 결과를 더 잘 읽는 방법
+          </Link>
           <ShareActions
             shareUrl={result.shareUrl}
             shareText={result.profile.shareText}
