@@ -16,6 +16,10 @@
 
 `홈 -> 20문항 질문 -> 계산 -> 결과 -> 링크 공유`
 
+보조 콘텐츠 흐름:
+
+`가이드 목록 -> 개별 가이드 -> 테스트 시작`
+
 배포 주소: [https://gaemitype.vercel.app](https://gaemitype.vercel.app)
 
 ## 기술 스택
@@ -50,6 +54,7 @@
 - robots / sitemap / ads.txt
 - Google Search Console 소유권 확인 파일
 - Naver Search Advisor 소유권 확인 메타태그
+- 가이드 목록과 공용 가이드 본문 레이아웃
 
 현재 결과 페이지에는 아래가 포함됩니다.
 - 타입 코드 / 타입명 / 설명
@@ -131,6 +136,7 @@
 원칙:
 - 1차 광고 위치는 `결과 페이지 최하단 1개 슬롯`
 - `/quiz`, `/calculating`에는 광고를 넣지 않음
+- `/guides`와 개별 가이드 페이지에는 광고를 넣지 않음
 - 광고는 결과 해석과 공유 CTA가 끝난 뒤에만 노출
 
 현재 운영 상태(2026-09-02 기준):
@@ -222,6 +228,7 @@ NEXT_PUBLIC_ADSENSE_RESULT_SLOT=1234567890
 - `npm test` 통과 확인
 - `npm run build` 통과 확인
 - `/about`, `/privacy`, `/robots.txt`, `/sitemap.xml`, `/ads.txt` 접근 확인
+- `/guides` 접근 및 각 가이드 카드 링크 확인
 - `/google024ec439f41db987.html` 소유권 확인 파일 접근 확인
 - 홈 HTML에 `naver-site-verification` 메타태그가 있는지 확인
 - 첫 문항 진행률이 0%, 마지막 문항 진행률이 95%인지 확인
