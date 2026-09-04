@@ -54,7 +54,10 @@
 - robots / sitemap / ads.txt
 - Google Search Console 소유권 확인 파일
 - Naver Search Advisor 소유권 확인 메타태그
-- 가이드 목록과 공용 가이드 본문 레이아웃
+- 가이드 목록 `/guides`
+- 가이드 3종: 4가지 판단 축, 4글자 코드와 16가지 결과, 판단 습관 기록
+- 공용 가이드 본문 레이아웃과 가이드 간 관련 글 연결
+- 헤더·푸터·홈·서비스 소개·결과 페이지의 가이드 링크
 
 현재 결과 페이지에는 아래가 포함됩니다.
 - 타입 코드 / 타입명 / 설명
@@ -139,12 +142,13 @@
 - `/guides`와 개별 가이드 페이지에는 광고를 넣지 않음
 - 광고는 결과 해석과 공유 CTA가 끝난 뒤에만 노출
 
-현재 운영 상태(2026-09-02 기준):
+현재 운영 상태(2026-09-04 기준):
 - Google AdSense 선택 완료
 - `gaemitype.vercel.app` 사이트 소유권 확인 완료
-- 첫 사이트 검토에서 `게시자 콘텐츠가 없는 화면 / 가치가 별로 없는 콘텐츠` 사유로 보완 요청
-- 서비스 소개, 개인정보처리방침, 크롤링 설정, `ads.txt`를 보강해 재심사 준비 중
-- 승인 전까지 광고 슬롯은 비활성 상태이며 `NEXT_PUBLIC_ENABLE_ADS=false` 유지
+- `ads.txt` 승인 완료
+- 사이트 검토 상태는 `준비 중`
+- 검토 중 서비스 소개, 개인정보처리방침, 크롤링 설정과 함께 독자 가이드 3종을 보강
+- 사이트 승인 전까지 광고 슬롯은 비활성 상태이며 `NEXT_PUBLIC_ENABLE_ADS=false` 유지
 
 환경변수의 실제 역할:
 - `NEXT_PUBLIC_ADSENSE_CLIENT`가 있으면 전역 layout은 소유권 확인용 meta만 로드합니다.
@@ -212,7 +216,9 @@ NEXT_PUBLIC_ADSENSE_RESULT_SLOT=1234567890
 - `src/app`: 라우팅 페이지
 - `src/components`: UI 컴포넌트
 - `src/components/ads`: 광고 관련 컴포넌트
-- `src/data`: 질문, 축, 결과, 공유 카피 데이터
+- `src/components/guides`: 공용 가이드 본문 레이아웃
+- `src/data`: 질문, 축, 결과, 공유 카피, 가이드 데이터
+- `src/app/guides`: 가이드 목록과 정확히 3개의 개별 가이드 라우트
 - `src/domain`: 타입 정의와 점수 계산 로직
 - `src/lib`: storage, OG, 이미지 경로, 광고 설정 등 공용 유틸
 - `public/results`: 타입별 결과 이미지
@@ -228,7 +234,9 @@ NEXT_PUBLIC_ADSENSE_RESULT_SLOT=1234567890
 - `npm test` 통과 확인
 - `npm run build` 통과 확인
 - `/about`, `/privacy`, `/robots.txt`, `/sitemap.xml`, `/ads.txt` 접근 확인
-- `/guides` 접근 및 각 가이드 카드 링크 확인
+- `/guides`, `/guides/four-axes`, `/guides/reading-results`, `/guides/decision-journal` 접근 확인
+- 가이드 목록의 카드, 각 가이드의 관련 글, 헤더·푸터·홈·서비스 소개·결과 페이지의 가이드 링크 확인
+- 가이드 페이지에 광고 슬롯이 없고, 결과 페이지 최하단 `result-footer`만 승인 후 광고 대상인지 확인
 - `/google024ec439f41db987.html` 소유권 확인 파일 접근 확인
 - 홈 HTML에 `naver-site-verification` 메타태그가 있는지 확인
 - 첫 문항 진행률이 0%, 마지막 문항 진행률이 95%인지 확인
