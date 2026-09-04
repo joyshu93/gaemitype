@@ -1,5 +1,5 @@
 import type { MetadataRoute } from "next";
-import { GUIDES } from "@/data/guides";
+import { GUIDES } from "@/data/guides.mts";
 import { TYPE_PROFILES } from "@/data/type-profiles";
 import { getSiteUrl } from "@/lib/site";
 
