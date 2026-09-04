@@ -97,3 +97,33 @@ Result: exit code `0`; no whitespace errors.
 
 - `020ee19 test: define guide content manifest`
 - Report commit: added after this report was written.
+
+## Fix Round 1/5
+
+### What changed
+
+Updated the `reading-results` guide description in `src/data/guides.mts` to replace the evaluative-sounding phrase `강점과 주의점을 읽는 기준` with explicit current-answer-summary framing: `결과를 현재 답변의 요약으로 읽는 기준`.
+
+The reviewer's Minor test-coverage suggestion was intentionally not addressed in this fix round.
+
+### Covering test files
+
+- `src/data/guides.test.mts`
+- `src/lib/ads.test.mts`
+
+### Exact command and output
+
+```text
+npm.cmd test
+
+> gaemitype@0.1.0 test
+> node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON --test src/lib/ads.test.mts src/data/guides.test.mts
+
+✔ 가이드는 완성된 3개 문서만 공개한다
+✔ 가이드의 경로와 메타데이터는 비어 있거나 중복되지 않는다
+✔ 광고가 비활성화되면 결과 슬롯과 스크립트를 사용하지 않는다
+✔ client와 slot이 모두 있을 때만 결과 광고 스크립트 주소를 만든다
+ℹ tests 4
+ℹ pass 4
+ℹ fail 0
+```
