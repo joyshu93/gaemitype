@@ -48,6 +48,7 @@
 - 타입별 결과 이미지 연결
 - 결과별 OG 메타데이터 최소 구현
 - robots / sitemap / ads.txt
+- Google Search Console 소유권 확인 파일
 
 현재 결과 페이지에는 아래가 포함됩니다.
 - 타입 코드 / 타입명 / 설명
@@ -220,6 +221,7 @@ NEXT_PUBLIC_ADSENSE_RESULT_SLOT=1234567890
 - `npm test` 통과 확인
 - `npm run build` 통과 확인
 - `/about`, `/privacy`, `/robots.txt`, `/sitemap.xml`, `/ads.txt` 접근 확인
+- `/google024ec439f41db987.html` 소유권 확인 파일 접근 확인
 - 첫 문항 진행률이 0%, 마지막 문항 진행률이 95%인지 확인
 - 선택지 선택 시 다음 문항으로 자동 이동하는지 확인
 - 마지막 답변 선택 후 계산 페이지로 이동하는지 확인
