@@ -33,6 +33,10 @@ export default function RootLayout({
   return (
     <html lang="ko">
       <head>
+        <meta
+          name="naver-site-verification"
+          content="b4a07db915b1b6d9f38fe2c47a02195bd79984d2"
+        />
         {adsConfig.client ? (
           <>
             <meta
