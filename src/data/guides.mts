@@ -24,3 +24,13 @@ export const GUIDES = [
 
 export type GuideSummary = (typeof GUIDES)[number];
 export type GuideSlug = GuideSummary["slug"];
+
+export function getGuide(slug: GuideSlug): GuideSummary {
+  const guide = GUIDES.find((item) => item.slug === slug);
+
+  if (!guide) {
+    throw new Error(`Unknown guide slug: ${slug}`);
+  }
+
+  return guide;
+}

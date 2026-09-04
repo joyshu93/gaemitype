@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { GuideLayout } from "@/components/guides/guide-layout";
 import { AXES } from "@/data/axes";
-import { GUIDES } from "@/data/guides.mts";
+import { getGuide } from "@/data/guides.mts";
 
 export const metadata: Metadata = {
   title: "개미타입 4가지 판단 축 읽는 법 | 개미타입",
@@ -10,8 +10,8 @@ export const metadata: Metadata = {
   alternates: { canonical: "/guides/four-axes" }
 };
 
-const guide = GUIDES[0];
-const relatedGuide = GUIDES[1];
+const guide = getGuide("four-axes");
+const relatedGuide = getGuide("reading-results");
 
 const AXIS_EXAMPLES = {
   AP: {

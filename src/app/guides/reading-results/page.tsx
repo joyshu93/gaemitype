@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { GuideLayout } from "@/components/guides/guide-layout";
 import { AXES } from "@/data/axes";
-import { GUIDES } from "@/data/guides.mts";
+import { getGuide } from "@/data/guides.mts";
 
 export const metadata: Metadata = {
   title: "4글자 코드와 16가지 결과 읽는 법 | 개미타입",
@@ -10,8 +10,8 @@ export const metadata: Metadata = {
   alternates: { canonical: "/guides/reading-results" }
 };
 
-const guide = GUIDES[1];
-const relatedGuide = GUIDES[2];
+const guide = getGuide("reading-results");
+const relatedGuide = getGuide("decision-journal");
 
 export default function ReadingResultsGuidePage() {
   return (

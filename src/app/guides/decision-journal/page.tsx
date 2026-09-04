@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { GuideLayout } from "@/components/guides/guide-layout";
-import { GUIDES } from "@/data/guides.mts";
+import { getGuide } from "@/data/guides.mts";
 
 export const metadata: Metadata = {
   title: "판단 습관을 세 줄로 기록하는 법 | 개미타입",
@@ -9,8 +9,8 @@ export const metadata: Metadata = {
   alternates: { canonical: "/guides/decision-journal" }
 };
 
-const guide = GUIDES[2];
-const relatedGuide = GUIDES[0];
+const guide = getGuide("decision-journal");
+const relatedGuide = getGuide("four-axes");
 
 const JOURNAL_LINES = [
   "나는 무엇을 먼저 봤나?",
