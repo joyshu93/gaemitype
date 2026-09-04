@@ -20,3 +20,9 @@ test("가이드의 경로와 메타데이터는 비어 있거나 중복되지 �
     assert.ok(guide.eyebrow.trim().length > 0);
   }
 });
+
+test("판단 기록 가이드는 세 줄 방법과 일치하는 제목을 사용한다", () => {
+  const guide = GUIDES.find((item) => item.slug === "decision-journal");
+
+  assert.equal(guide?.title, "내 판단 습관을 세 줄로 기록하는 법");
+});

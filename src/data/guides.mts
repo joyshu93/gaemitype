@@ -16,7 +16,7 @@ export const GUIDES = [
   {
     slug: "decision-journal",
     eyebrow: "판단 기록",
-    title: "내 판단 습관을 한 줄로 기록하는 법",
+    title: "내 판단 습관을 세 줄로 기록하는 법",
     description:
       "결과를 행동 지침으로 쓰지 않고, 무엇을 먼저 보고 왜 마음이 움직였는지 돌아보는 간단한 기록법을 소개합니다."
   }
