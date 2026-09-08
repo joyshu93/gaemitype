@@ -12,6 +12,10 @@ export const metadata: Metadata = {
   title: "개미타입",
   description: "투자 습관과 판단 성향을 16타입으로 가볍게 읽어보는 테스트",
   metadataBase: new URL(siteUrl),
+  icons: {
+    icon: [{ url: "/favicon.ico", type: "image/svg+xml" }],
+    shortcut: "/favicon.ico"
+  },
   openGraph: {
     title: "개미타입",
     description: "투자 습관과 판단 성향을 16타입으로 가볍게 읽어보는 테스트",
