@@ -7,8 +7,8 @@ import { getSiteUrl } from "@/lib/site";
 
 type ResultPageProps = {
   searchParams: Promise<{
-    code?: string;
-    answers?: string;
+    code?: string | string[];
+    answers?: string | string[];
   }>;
 };
 
@@ -17,7 +17,7 @@ export async function generateMetadata({
 }: ResultPageProps): Promise<Metadata> {
   const params = await searchParams;
   const siteUrl = getSiteUrl();
-  const code = params.code ?? "";
+  const code = typeof params.code === "string" ? params.code : "";
   const meta = buildResultMetadata(code, siteUrl);
 
   return {
@@ -50,11 +50,9 @@ export async function generateMetadata({
 
 export default async function ResultPage({ searchParams }: ResultPageProps) {
   const params = await searchParams;
-  const code = params.code ?? "";
-  const answers = params.answers;
   const result = getResultFromAnswersOrCode({
-    code,
-    serializedAnswers: answers,
+    code: params.code,
+    serializedAnswers: params.answers,
     baseUrl: ""
   });
 
