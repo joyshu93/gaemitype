@@ -220,6 +220,15 @@ NEXT_PUBLIC_ADSENSE_RESULT_SLOT=1234567890
 
 현재 Vercel의 `NEXT_PUBLIC_SITE_URL`은 `https://gaemitype.vercel.app`으로 설정합니다. 실제 환경 변수 값은 저장소에 커밋하지 않고 Vercel 프로젝트 설정에서 관리합니다.
 
+### 승인된 변경의 미리보기
+
+- 운영 환경은 `main`을 사용합니다. `codex/approved-experience` 브랜치는 별도의 Vercel Preview 환경으로 배포합니다.
+- [현재 미리보기](https://gaemitype-git-codex-approved-experience-joyshu93s-projects.vercel.app)는 Vercel 로그인이 필요합니다. 운영 사이트에 반영된 변경은 아닙니다.
+- `NEXT_PUBLIC_SITE_URL`은 Vercel에서 **Preview / codex/approved-experience 브랜치에만** 위 미리보기 주소로 지정했습니다. Production 및 다른 브랜치의 값을 바꾸지 않습니다. 환경 변수 변경 후 같은 소스를 Preview로 다시 배포해야 반영됩니다.
+- 결과의 canonical, `og:url`, `og:image`가 미리보기 도메인을 가리키는지 확인합니다. 보호된 Preview에 대한 외부 요청은 로그인 페이지로 이동하므로, 이를 실제 메신저 미리보기 검증으로 세지 않습니다.
+- 광고 및 접근 보호 설정은 유지합니다. 운영 반영에는 별도의 최종 확인이 필요하며, Preview의 환경 값을 Production으로 복사하지 않습니다.
+- 배포 주소·커밋·직접 확인한 항목과 남은 검증은 [2026-09-14 Preview 검증 기록](docs/reviews/2026-09-14-preview-verification.md)에 남겼습니다.
+
 ## 프로젝트 구조
 
 - `src/app`: 라우팅 페이지

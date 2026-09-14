@@ -1,0 +1,109 @@
+# 개미타입 Preview 배포·검증 기록
+
+- 확인일: 2026-09-14, Asia/Seoul.
+- 목표: 승인된 P1–P3 구현을 별도 Preview에 배포하고, 실행 가능한 브라우저 검증과 남은 확인을 구분한다.
+- 진행 근거: 구현 완료 후 사용자가 미리보기 배포와 검증을 메인이 진행하는지 확인했고, 이번 라운드에서 이를 직접 진행했다. 운영 반영은 최종 확인 뒤라는 범위를 유지한다.
+- 실제 root: `C:\Users\D-\Documents\Codex_Project\GaemigulTest`.
+- 작업 worktree: `C:\Users\D-\Documents\Codex_Project\GaemigulTest\.worktrees\approved-experience`.
+- 관련 기록: [수정 승인안](2026-09-14-improvement-approval-plan.md), [이전 구현·로컬 검증](2026-09-14-approved-experience-implementation.md). 이전 기록의 배포·push 미실행 상태는 당시 라운드의 기록이며, 이번 문서가 후속 Preview 진행 상태를 설명한다.
+
+## 현재 결정과 주소
+
+**Preview 배포와 아래 브라우저 확인을 완료했다. 실기기·브라우저 자체 200% 줌·스크린리더 청취·실제 외부 메신저 미리보기는 미완이다. 운영 사이트는 이전 배포를 유지한다.**
+
+| 구분 | 확인한 값 |
+|---|---|
+| 사용자가 열 미리보기 | [브랜치 Preview](https://gaemitype-git-codex-approved-experience-joyshu93s-projects.vercel.app) — Vercel 로그인 필요 |
+| 검증 대상 고정 배포 | [7huxrflgt 배포](https://gaemitype-7huxrflgt-joyshu93s-projects.vercel.app) |
+| Vercel 상세 | [CDpGgW9UQkoHqMEEip4kwhQTe6Xd](https://vercel.com/joyshu93s-projects/gaemitype/CDpGgW9UQkoHqMEEip4kwhQTe6Xd) |
+| 소스 | `codex/approved-experience`, `396930de1b99d0366893ca0ec57497621cede3db` |
+| 배포 환경·상태 | Preview / Ready, 빌드 상세 33초, 17:09:20 KST 완료 |
+| 운영 배포 | `main`, `e2712d007d62ade421343cd16177e5b001f8dd03`, 기존 `wnmFK1vU7zFNj1TfvXMdfiqHvi78` |
+
+현재 브랜치 주소는 이후 같은 브랜치를 재배포하면 새 배포를 가리킬 수 있다. 검증 재현에는 위 고정 배포와 소스 SHA도 함께 사용한다.
+
+## 수행한 변경과 보존
+
+1. 테스트·린트·제품 파일 diff 검사 후 `396930d`를 `origin/codex/approved-experience`에 올렸다. main에는 push하거나 병합하지 않았다. 이 push가 기존 Vercel Git 연동의 Preview 배포를 생성했다.
+2. 첫 Preview `F1giAHnadZNhBGAkeVjDyC6x9LLc` / `gaemitype-ck75tvvi3-joyshu93s-projects.vercel.app`에서 새 결과 화면은 표시됐지만, canonical·OG URL·이미지 URL은 운영 도메인을 가리키는 것을 브라우저 DOM으로 확인했다.
+3. Vercel에 `NEXT_PUBLIC_SITE_URL` Config를 **Preview의 codex/approved-experience 브랜치만** 대상으로 추가했다. 값은 위 브랜치 Preview HTTPS 주소다. 저장 전에 Production 선택을 해제했고, 저장 후 목록에서 `Preview / codex/approved-experience`를 확인했다. 기존 All Environments 값과 광고 변수는 유지했다.
+4. 동일한 `396930d`를 Preview 환경으로 재배포했다. 재배포 대화상자의 Preview 선택과 브랜치 도메인을 확인했다. 새 배포의 canonical·OG URL·이미지 URL은 ALRD/PTIC 모두 브랜치 Preview 도메인으로 바뀌었다.
+5. 이 문서와 README에 Preview 실행·검증 전제를 추가한다. 제품 코드·질문·점수 계산·이미지·의존성·광고 설정은 이번 라운드에서 변경하지 않았다. 접근 보호 설정도 유지했다.
+
+최종 원격 조회에서 feature는 `396930d`, main은 `e2712d0`였다. Vercel Overview의 운영 Source도 main/e2712d0, 운영 도메인도 `gaemitype.vercel.app`으로 동일했다. root의 AGENTS·README·첫 방문 진단·관찰 근거·승인안의 SHA-256은 이전 기록과 일치했고, 기존 미추적 보고서는 보존했다.
+
+공개 운영 반영, PR 생성·병합, 광고 활성화, AdSense 재심사, 새 기능 추가는 수행하지 않았다. 이 검증 문서와 README의 후속 기록은 로컬 커밋으로 남기며, 기록만을 위해 추가 Preview 빌드를 만들지는 않는다.
+
+## 자동·배포 검증
+
+- 메인과 QA가 `npm.cmd test`를 각각 다시 실행했다. 두 실행 모두 16/16 통과했다.
+- 메인이 `npm.cmd run lint`를 다시 실행해 종료 코드 0을 확인했다.
+- `git diff --check e2712d0..HEAD -- src README.md package.json`에서 문제가 없었다. 보존한 과거 승인 문서의 Markdown 줄바꿈 공백을 이번에 수정하지 않았다.
+- Vercel 화면에서 동일 소스 SHA, Preview / Ready, `Build Completed`, `Deployment completed`를 직접 확인했다. 로컬 서버의 production 모드 실행을 운영 배포로 표현하지 않는다.
+- 원격 빌드에는 `unrs-resolver@1.11.1`의 npm allow-scripts 경고와 오래된 Browserslist 데이터 안내가 있었다. 빌드는 완료됐고 이번 라운드에서 패키지 설치 정책이나 의존성을 바꾸지 않았다.
+
+## 메인 에이전트의 직접 브라우저 관찰
+
+아래 입력은 메인이 검증을 위해 고른 답변이다. 사용자의 실제 응답, 사용자 조사, 성격 검사 타당도 검증 자료가 아니다. Chrome의 브라우저 화면·접근성 정보·DOM을 확인했고, 배치와 줄바꿈에는 스크린샷을 사용했다. 화면 크기 변경은 반응형 에뮬레이션이며 실제 휴대폰 검증과 구분한다.
+
+아래 경로의 기준 도메인은 위 브랜치 Preview다.
+
+| 번호 | 직접 수행한 확인 | 관찰 결과 |
+|---|---|---|
+| P01 | `/result?code=ALRD`, 데스크톱 1440×900 | 이름·설명·타입 기본 안내가 이미지보다 먼저 표시됨. 실제 답변 인용 0개, 분포 DOM 0개. 가로 넘침 없음 |
+| P02 | `/result?code=ALRD&answers=01010010100101001010&source=answers` | 네 축 모두 3:2, 원문 사례 8개, 실제 분포 4개. “이번 다섯 문항”의 선택 수라는 해설 확인 |
+| P03 | `/result?code=PTIC&answers=11111111111111111111` | 네 축 모두 0:5, 각 축 오른쪽 원문 사례 1개씩 총 4개. 다른 상황에서도 늘 같다는 뜻은 아니라는 설명 확인 |
+| P04 | ALRD에 0이 21개인 answers, ALRD에 1이 20개인 answers | 두 경우 모두 답변 확인 실패 안내와 기본 타입 설명. 원문 사례·분포 각각 0개 |
+| P05 | 390×844에서 랜딩 → 시작 → 20문항에 `01010`을 네 번 선택 → 계산 → 결과 | 위 P02 URL이 실제 생성됨. 사례 8개. 첫 화면에서 상태 안내 하단 580px, 이미지 시작 617px, 가로 넘침 없음 |
+| P06 | P05 결과를 360×640에서 확인 | 한 열 축 카드, 8개 인용의 내용 너비와 표시 너비 동일, 가로 넘침 없음. 질문·선택 원문 줄바꿈과 3:2 설명 스크린샷 확인 |
+| P07 | P05 완주로 응답이 저장된 같은 브라우저에서 코드 전용 ALRD/PTIC 열기 | 다른 저장 답변을 끌어오지 않음. 각각 인용·분포 0개, “답변 내용과 선택 횟수는 포함되지 않아요” 안내 |
+| P08 | ALRD/PTIC의 메타데이터 DOM | 새 공식 이름·설명·이미지 alt가 일치. canonical, og:url은 코드만 포함. og:url·og:image는 브랜치 Preview 도메인 |
+| P09 | 개인 결과에서 결과 링크 복사 버튼 실행 | 재현 확인에서 실제 클립보드가 `https://gaemitype-git-codex-approved-experience-joyshu93s-projects.vercel.app/result?code=ALRD`였음. answers/source 없음. 복사 완료 문구 스크린샷 확인 |
+| P10 | 데스크톱 1440×900 개인 결과 | 두 열 각각 416px, 실제 인용 8개, 가로 넘침 없음. 선택 수 안내·축별 해설·원문 인용의 배치 직접 확인 |
+| P11 | `/about`, `/guides/reading-results`, `/guides/four-axes`, `/guides/decision-journal`, `/privacy` | 각 페이지 제목과 본문 표시. 확인한 결과·보조 페이지에서 `ins.adsbygoogle` 및 광고 요청 script 없음 |
+| P12 | 검증 탭 오류 로그 | error 목록은 비어 있음. 별도로 읽은 warning은 Chrome 확장 프로그램 출처였으며 제품 경고로 분류하지 않음 |
+
+P09의 첫 시도에서는 완료 문구 뒤에도 클립보드 읽기가 이전 PTIC 공유 문구를 반환했다. 그 시도는 통과로 세지 않았다. 현재 버튼 상태를 다시 확인한 뒤 링크 복사를 재현했을 때 정확한 Preview URL을 직접 읽었다. 이전 값이 남았던 원인은 미확정이며, 앱 결함 또는 모든 환경의 복사 안정성이 입증됐다고 단정하지 않는다. 실제 기기 확인 때 첫 클릭의 복사 결과를 한 번 더 확인한다.
+
+검증 뒤 임시 viewport 설정을 해제했다. Preview 화면에서 보인 Vercel 도구 버튼은 배포 플랫폼 UI이며 제품 코드에 새로 추가한 기능이 아니다.
+
+## 직접 확인하지 못한 부분
+
+| 항목 | 현재 상태와 근거 | 다음에 확인할 최소 내용 |
+|---|---|---|
+| 실제 iOS/Safari·Android/Chrome | 미실행. 연결된 Android 기기 수 0. 브라우저 크기 변경을 실기기 검증으로 세지 않음 | 한 기기씩 테스트 완주, 개인/코드 전용 결과, 잘림·터치·첫 공유 복사 확인 |
+| 브라우저 자체 200% 줌 | 미실행. 사용 가능한 브라우저 제어에서 해당 배율을 검증하지 못함. 이전 로컬 글자 크기 확대는 대체 통과 근거가 아님 | 개인·코드 전용 화면에서 본문·버튼·인용 읽기와 가로 넘침 확인 |
+| 스크린리더 청취 | 미실행. 접근성 트리와 aria-hidden 확인만으로 음성 읽기 성공을 주장하지 않음 | 이름·상태 안내·이미지 순서, 개인 횟수/사례 읽기, 코드 전용에서 개인 근거를 읽지 않음, 버튼 이름 확인 |
+| 실제 카카오톡 등 외부 메신저 미리보기 | 미실행. 로그인 없는 HTTPS 요청은 최종적으로 `vercel.com/login`의 `Login – Vercel` HTML로 이동. 보호 설정 유지 | 접근 가능한 배포에서 ALRD/PTIC 두 링크의 제목·설명·이미지 확인; 플랫폼·시각·캐시 상태 기록 |
+| robots·sitemap·정적 파일 외부 접근 | 미완. Chrome에서 `/robots.txt`는 `ERR_BLOCKED_BY_CLIENT`. 이후 sitemap·ads.txt·소유권 파일의 브라우저 확인은 진행하지 않음 | 접근 가능한 환경에서 실제 본문과 응답 확인. 클라이언트 차단을 서버 라우트 오류로 단정하지 않음 |
+
+로그인 없는 결과·robots·sitemap·PNG 요청은 리다이렉트 뒤 HTTP 200/HTML을 받았다. 이것을 원래 경로의 정상 응답이나 이미지 로드 성공으로 세지 않았다. ALRD 요청의 최종 주소·제목을 추가 확인해 로그인 화면임을 구분했다. Preview 보호를 해제하거나 우회 토큰을 만들지 않았다.
+
+## 역할별 검토와 메인 통합 결정
+
+- **PM:** 기존 승인안·구현 기록·README와 git 상태를 독립 검토했다. Preview 생성은 진행 가능하며, 실기기 등의 미실행을 새 제품 기능·문구·이미지 변경 게이트로 확대하지 않도록 제안했다.
+- **Technical Architect:** 사이트 URL이 메타데이터·robots·sitemap으로 이어지는 코드 경로를 독립 확인했다. 첫 Preview의 운영 도메인 상속을 검증 한계로 지적했고, 메인이 관찰 후 적용한 브랜치 한정 override와 동일 SHA 재배포가 적절하다고 검토했다. 인증 보호로 인한 외부 OG 미확인은 배포 실패가 아니라 남은 검증으로 분류했다.
+- **QA / Critic:** 테스트 16/16 재실행, 문구·모드·기존 관찰 기록을 독립 확인했다. 메인이 전달한 새 관찰을 검토해 중대한 코드 차단은 없다고 판단했다. 최초 클립보드 불일치, 실제 기기와 에뮬레이션, 로그인 HTML과 실제 서비스 응답을 구분하도록 요구했다.
+
+역할 검토는 AI의 코드·기록 검토다. 새 화면 관찰은 메인이 수행했으며 서브에이전트가 직접 사이트를 체험한 것으로 표현하지 않는다.
+
+충돌·선택과 통합 이유:
+
+1. **운영 URL 상속 유지 또는 Preview 주소 분리:** 제품의 공유 결과가 어떤 배포를 가리키는지 확인할 수 있어야 하므로 주소 분리를 선택했다. 정적 제품 코드 변경 대신 기존 환경 변수 하나를 해당 Preview 브랜치에만 적용했다.
+2. **외부 OG 검증을 위해 보호를 해제할지:** 기존 접근 보호를 유지하고 미확인 상태를 기록한다. 메신저 확인을 위해 사용자가 요청하지 않은 접근 범위 변경이나 새 공개 환경을 만들지 않는다.
+3. **네 가지 수동 항목이 미완이면 Preview도 미완으로 볼지:** Preview 생성·직접 수행한 브라우저 범위는 완료로, 실기기·줌·청취·메신저는 미완으로 각각 기록한다. 모든 검증 완료나 운영 출시 준비 완료로 확대하지 않는다.
+
+위 판단은 제품 핵심 원칙 → MVP 범위 → 구현 복잡도 순서로 통합했다. 중요한 역할 충돌은 남지 않았다.
+
+## 오해 가능성·금지 표현·인계
+
+- 오해 가능성: 선택 수는 이번 다섯 문항의 응답 수다. 성격의 강도·검사 정확도·투자 능력으로 읽지 않는다. 타입 코드 전용 URL에는 개인 답변 근거가 없다. 타입의 공통 설명 장면은 실제 답변 기록과 구분한다.
+- 금지 표현: 종목·포트폴리오 추천, 수익·위험 회피 보장, 매수/매도 신호, 기회 포착 성공·투자 타이밍 능력 단정, 검사 타당도·AdSense 승인 보장. 이번 라운드에서 추가하지 않는다.
+- 유지한 한계: 기존 캐릭터 소품의 연상과 질문의 복수 의미는 승인안의 별도 S1–S3 안건이다. 이번 배포·카피 수정으로 해소됐다고 주장하지 않는다.
+- 완료: Preview 원격 배포, 브랜치 전용 사이트 주소, 위 브라우저·테스트·린트 확인, README와 검증 기록.
+- 부분 완료: 기기·접근성·공유 환경 확인. 데스크톱/반응형과 메타데이터는 확인했고, 위 표의 실제 환경 확인은 남았다.
+- 미완: 위 실기기·줌·청취·실제 메신저 및 보호된 정적 경로 확인. 운영 병합·배포도 아직 수행하지 않았다.
+- 운영 반영 전: 사용자가 Preview 문구·화면을 보고 최종 확인한다. 남은 수동 검증은 수행 여부와 결과를 기록하고, 미확인을 통과로 바꾸지 않는다. Production에는 기존 운영 SITE_URL을 사용한다.
+- 이후 정리 가능: 이전 구현 기록의 프로필 포맷·문구 테스트 결합도와 별도 S1–S3. 새 제품 기능을 추가하지 않는다.
+
+배포 방식 참고: [Vercel Git 배포](https://vercel.com/docs/git), [생성 URL](https://vercel.com/docs/deployments/generated-urls), [Deployment Protection](https://vercel.com/docs/deployment-protection). 이 문서의 실제 배포·보호 상태 판단은 위 직접 관찰을 근거로 한다.
