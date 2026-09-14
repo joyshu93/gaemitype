@@ -13,14 +13,12 @@ export function ShareActions({ shareUrl, shareText }: ShareActionsProps) {
   const router = useRouter();
   const [copied, setCopied] = useState(false);
   const [copiedText, setCopiedText] = useState(false);
-  const resolvedShareUrl =
-    typeof window !== "undefined" && !shareUrl.startsWith("http")
-      ? `${window.location.origin}${shareUrl}`
-      : shareUrl;
-
   const copyLink = async () => {
     try {
-      await navigator.clipboard.writeText(resolvedShareUrl);
+      const clipboardShareUrl = shareUrl.startsWith("http")
+        ? shareUrl
+        : `${window.location.origin}${shareUrl}`;
+      await navigator.clipboard.writeText(clipboardShareUrl);
       setCopied(true);
       window.setTimeout(() => setCopied(false), 2000);
     } catch {
@@ -50,7 +48,7 @@ export function ShareActions({ shareUrl, shareText }: ShareActionsProps) {
           공유 링크
         </p>
         <p className="mt-3 break-all text-sm leading-6 text-ink/72">
-          {resolvedShareUrl}
+          {shareUrl}
         </p>
       </div>
 
