@@ -220,13 +220,15 @@ NEXT_PUBLIC_ADSENSE_RESULT_SLOT=1234567890
 
 현재 Vercel의 `NEXT_PUBLIC_SITE_URL`은 `https://gaemitype.vercel.app`으로 설정합니다. 실제 환경 변수 값은 저장소에 커밋하지 않고 Vercel 프로젝트 설정에서 관리합니다.
 
-### 승인된 변경의 미리보기
+### 운영 배포와 미리보기
 
 - 운영 환경은 `main`을 사용합니다. `codex/approved-experience` 브랜치는 별도의 Vercel Preview 환경으로 배포합니다.
-- [현재 미리보기](https://gaemitype-git-codex-approved-experience-joyshu93s-projects.vercel.app)는 Vercel 로그인이 필요합니다. 운영 사이트에 반영된 변경은 아닙니다.
+- 운영 반영은 승인된 변경을 `main`에 병합·푸시한 뒤, Vercel Production 빌드가 Ready 상태이고 [운영 사이트](https://gaemitype.vercel.app)에 연결됐는지 확인하는 순서로 진행합니다.
+- [미리보기](https://gaemitype-git-codex-approved-experience-joyshu93s-projects.vercel.app)는 Vercel 로그인이 필요하며, 운영 배포와 별개의 환경입니다.
 - `NEXT_PUBLIC_SITE_URL`은 Vercel에서 **Preview / codex/approved-experience 브랜치에만** 위 미리보기 주소로 지정했습니다. Production 및 다른 브랜치의 값을 바꾸지 않습니다. 환경 변수 변경 후 같은 소스를 Preview로 다시 배포해야 반영됩니다.
 - 결과의 canonical, `og:url`, `og:image`가 미리보기 도메인을 가리키는지 확인합니다. 보호된 Preview에 대한 외부 요청은 로그인 페이지로 이동하므로, 이를 실제 메신저 미리보기 검증으로 세지 않습니다.
-- 광고 및 접근 보호 설정은 유지합니다. 운영 반영에는 별도의 최종 확인이 필요하며, Preview의 환경 값을 Production으로 복사하지 않습니다.
+- 광고 및 접근 보호 설정은 유지합니다. Production은 `https://gaemitype.vercel.app`을 사용합니다. Preview의 환경 값을 Production으로 복사하거나 Preview 주소로 빌드한 결과물을 그대로 승격하지 않습니다.
+- 운영 배포 후 개인 응답 결과·코드 전용 공유 결과·잘못된 URL의 분기와 canonical·OG·robots·sitemap의 운영 도메인을 다시 확인합니다. 실제 모바일 기기·브라우저 200% 확대·화면 읽기 도구·메신저 미리보기는 각각 수행 여부를 따로 기록합니다.
 - 배포 주소·커밋·직접 확인한 항목과 남은 검증은 [2026-09-14 Preview 검증 기록](docs/reviews/2026-09-14-preview-verification.md)에 남겼습니다.
 
 ## 프로젝트 구조
@@ -264,7 +266,7 @@ NEXT_PUBLIC_ADSENSE_RESULT_SLOT=1234567890
 - 퀴즈 화면의 `처음부터` 버튼이 localStorage 답변을 비우고 q01 및 진행률 `0%`로 돌아가는지 확인
 - `/quiz` 완주 후 결과 진입 확인
 - `/result?code=...` 직접 진입 확인
-- 공유 결과 모드에서 세부 강도가 숨겨지는지 확인
+- 응답 없는 공유 결과에 선택 횟수·분포 막대·개인 선택 사례가 없고, 타입 코드의 뜻과 응답 없음 안내만 표시되는지 확인
 - 모바일에서 결과 페이지 가독성 확인
 - 실제 메신저에서 OG title / description / image 확인
 
