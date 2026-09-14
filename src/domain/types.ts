@@ -78,9 +78,8 @@ export type TypeProfile = {
   name: string;
   headline: string;
   description: string;
-  strengths: [string, string, string];
-  habits: [string, string, string];
-  cautions: [string, string];
+  scenes: [string, string];
+  reflections: [string, string];
   shareText: string;
 };
 

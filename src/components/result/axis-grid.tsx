@@ -1,8 +1,10 @@
 import { AXES } from "@/data/axes";
-import type { AxisScore } from "@/domain/types";
+import { getAxisSelectionExplanation } from "@/domain/result-presentation";
+import type { AxisScore, ResultSummary } from "@/domain/types";
 
 type AxisGridProps = {
   items: AxisScore[];
+  mode: ResultSummary["mode"];
 };
 
 function getAxisDefinition(key: AxisScore["key"]) {
@@ -10,25 +12,23 @@ function getAxisDefinition(key: AxisScore["key"]) {
 }
 
 function getMarkerPosition(item: AxisScore) {
-  if (typeof item.leftScore === "number" && typeof item.rightScore === "number") {
-    const total = item.leftScore + item.rightScore;
-
-    if (total > 0) {
-      return (item.rightScore / total) * 100;
-    }
-  }
-
-  return item.selectedCode === item.leftCode ? 0 : 100;
+  const total = (item.leftScore ?? 0) + (item.rightScore ?? 0);
+  return total > 0 ? ((item.rightScore ?? 0) / total) * 100 : 0;
 }
 
-export function AxisGrid({ items }: AxisGridProps) {
+function getSharedExplanation(summary: string) {
+  return summary.endsWith("편이에요.")
+    ? `${summary.slice(0, -"편이에요.".length)}쪽을 뜻해요.`
+    : summary;
+}
+
+export function AxisGrid({ items, mode }: AxisGridProps) {
+  const isPersonal = mode === "answers";
+
   return (
     <section className="grid gap-4 sm:grid-cols-2">
       {items.map((item) => {
         const axis = getAxisDefinition(item.key);
-        const leftLabel = axis?.left.shortLabel ?? item.leftCode;
-        const rightLabel = axis?.right.shortLabel ?? item.rightCode;
-        const markerPosition = getMarkerPosition(item);
 
         return (
           <article
@@ -36,39 +36,55 @@ export function AxisGrid({ items }: AxisGridProps) {
             className="rounded-[28px] border border-ink/10 bg-white p-5 shadow-card"
           >
             <p className="text-sm text-ink/45">{item.title}</p>
-            <div className="mt-3 inline-flex rounded-full bg-sand px-3 py-1 text-sm font-medium text-ink/80">
+            <h2 className="mt-3 text-lg font-semibold text-ink">
               {item.selectedCode} · {item.selectedLabel}
-            </div>
+            </h2>
 
-            <div className="mt-5">
-              <div className="flex items-center justify-between text-sm font-medium text-ink/70">
-                <span>{leftLabel}</span>
-                <span>{rightLabel}</span>
-              </div>
+            {isPersonal ? (
+              <>
+                <p className="mt-2 text-sm leading-6 text-ink/70">{item.summary}</p>
+                <p className="mt-4 text-sm leading-6 text-ink/72">
+                  {getAxisSelectionExplanation(item)}
+                </p>
+                <div className="mt-4" aria-hidden="true">
+                  <p className="text-xs font-medium text-ink/50">선택 횟수 분포</p>
+                  <div className="relative mt-2 h-3 rounded-full bg-sand/80">
+                    <div className="absolute inset-y-0 left-0 w-1/2 rounded-full bg-coral/18" />
+                    <div className="absolute inset-y-0 right-0 w-1/2 rounded-full bg-sky/18" />
+                    <div
+                      className="absolute top-1/2 h-5 w-5 -translate-x-1/2 -translate-y-1/2 rounded-full border-4 border-white bg-ink shadow-sm"
+                      style={{ left: `clamp(10px, ${getMarkerPosition(item)}%, calc(100% - 10px))` }}
+                    />
+                  </div>
+                </div>
 
-              <div className="relative mt-3 h-3 rounded-full bg-sand/80">
-                <div className="absolute inset-y-0 left-0 w-1/2 rounded-full bg-coral/18" />
-                <div className="absolute inset-y-0 right-0 w-1/2 rounded-full bg-sky/18" />
-                <div
-                  className="absolute top-1/2 h-5 w-5 -translate-x-1/2 -translate-y-1/2 rounded-full border-4 border-white bg-ink shadow-sm"
-                  style={{
-                    left: `clamp(10px, ${markerPosition}%, calc(100% - 10px))`
-                  }}
-                />
-              </div>
-            </div>
+                {item.examples && item.examples.length > 0 ? (
+                  <section className="mt-5 border-t border-ink/8 pt-5">
+                    <h3 className="text-base font-semibold text-ink">이 축에 반영된 선택 예시</h3>
+                    <div className="mt-3 space-y-4">
+                      {item.examples.map((example) => {
+                        const selectedAxisSide =
+                          example.selectedCode === axis?.left.code ? axis.left : axis?.right;
 
-            <h2 className="mt-5 text-lg font-semibold text-ink">{item.selectedLabel}</h2>
-            <p className="mt-2 text-sm leading-6 text-ink/70">{item.summary}</p>
-
-            {typeof item.leftScore === "number" && typeof item.rightScore === "number" ? (
-              <p className="mt-4 text-xs leading-5 text-ink/45">
-                응답 기준 요약: {item.leftCode} {item.leftScore} / {item.rightCode}{" "}
-                {item.rightScore}
-              </p>
+                        return (
+                          <blockquote key={example.questionId} className="rounded-2xl bg-sand/55 p-4 text-sm leading-6 text-ink/75">
+                            <p className="font-medium text-ink">
+                              Q{example.questionNumber}. {example.prompt}
+                            </p>
+                            <p className="mt-2">
+                              고른 답변: <strong>{example.selectedOptionLabel}</strong> → {example.selectedCode}{" "}
+                              {selectedAxisSide?.label}
+                            </p>
+                          </blockquote>
+                        );
+                      })}
+                    </div>
+                  </section>
+                ) : null}
+              </>
             ) : (
-              <p className="mt-4 text-xs leading-5 text-ink/45">
-                공유 결과에서는 세부 응답 강도 대신, 선택된 축 위치만 보여드려요.
+              <p className="mt-2 text-sm leading-6 text-ink/70">
+                {getSharedExplanation(item.summary)}
               </p>
             )}
           </article>

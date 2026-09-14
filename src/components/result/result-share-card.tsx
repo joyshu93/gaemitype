@@ -22,9 +22,9 @@ export function ResultShareCard({
   const theme = getResultShareTheme(code);
   const shareCopy = getResultShareCopy(code);
   const resolvedImageSrc = imageSrc ?? getResultImagePath(code);
-  const cardName = shareCopy?.cardName ?? profile.name;
-  const cardHeadline = shareCopy?.cardHeadline ?? profile.headline;
-  const cardShareLine = shareCopy?.cardShareLine ?? profile.shareText;
+  const cardName = shareCopy?.name ?? profile.name;
+  const cardHeadline = shareCopy?.headline ?? profile.headline;
+  const cardShareLine = shareCopy?.text ?? profile.shareText;
 
   return (
     <article

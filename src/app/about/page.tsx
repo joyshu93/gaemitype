@@ -59,7 +59,9 @@ export default function AboutPage() {
           <p className="mt-4 text-sm leading-7 text-ink/70">
             각 질문의 두 선택지는 하나의 성향 축에 연결됩니다. 20개 답변을 축별로
             합산하고, 더 자주 선택한 쪽을 조합해 타입 코드를 만듭니다. 각 축에는 5개
-            문항이 있어 정상적으로 모두 답하면 동점이 생기지 않습니다.
+            문항이 있어 정상적으로 모두 답하면 동점이 생기지 않습니다. 같은 타입이라도
+            선택 횟수와 답변 내용은 다를 수 있어요. 일상 질문의 선택을 요약하며, 실제
+            투자 상황에서 같은 행동을 한다는 뜻은 아니에요.
           </p>
         </article>
         <article className="rounded-[30px] bg-white p-7 shadow-card">

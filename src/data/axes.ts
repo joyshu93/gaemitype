@@ -8,13 +8,13 @@ export const AXES: AxisDefinition[] = [
       code: "A",
       label: "준비형",
       shortLabel: "준비형",
-      description: "움직이기 전에 기준과 흐름을 먼저 정리해두면 더 편안한 쪽이에요."
+      description: "시작하기 전에 순서나 확인할 내용을 미리 정리해두는 편이에요."
     },
     right: {
       code: "P",
       label: "현장형",
       shortLabel: "현장형",
-      description: "상황을 보면서 그때그때 더 맞는 쪽으로 조정하는 편이에요."
+      description: "상황을 직접 보거나 해보면서 필요한 순서와 방법을 정해가는 편이에요."
     }
   },
   {
@@ -24,13 +24,13 @@ export const AXES: AxisDefinition[] = [
       code: "L",
       label: "흐름형",
       shortLabel: "흐름형",
-      description: "짧은 흔들림보다 조금 더 긴 흐름과 방향을 보는 편이에요."
+      description: "당장의 변화보다 시간이 지나도 이어갈 방향과 만족을 먼저 살펴보는 편이에요."
     },
     right: {
       code: "T",
       label: "타이밍형",
       shortLabel: "타이밍형",
-      description: "지금 구간의 변화와 리듬을 빠르게 읽는 쪽에 가까워요."
+      description: "지금 상황에서 달라진 점과 당장 바꿀 부분에 먼저 관심이 가는 편이에요."
     }
   },
   {
@@ -40,13 +40,13 @@ export const AXES: AxisDefinition[] = [
       code: "R",
       label: "기준형",
       shortLabel: "기준형",
-      description: "내 기준과 원래 세운 규칙을 먼저 확인해야 마음이 놓이는 편이에요."
+      description: "새 선택이나 변화 앞에서 원래 중요하게 보던 기준을 먼저 떠올리는 편이에요."
     },
     right: {
       code: "I",
       label: "반응형",
       shortLabel: "반응형",
-      description: "새로 들어온 신호와 분위기 변화에 더 빠르게 반응하는 편이에요."
+      description: "새 선택이나 변화 앞에서 새로 들어온 정보나 달라진 분위기에 먼저 눈길이 가는 편이에요."
     }
   },
   {
@@ -56,13 +56,13 @@ export const AXES: AxisDefinition[] = [
       code: "D",
       label: "근거형",
       shortLabel: "근거형",
-      description: "숫자나 자료처럼 확인 가능한 근거가 있어야 더 확신이 생겨요."
+      description: "이유와 기능, 비교 항목처럼 구체적인 내용이 하나씩 정리될 때 납득이 가는 편이에요."
     },
     right: {
       code: "C",
       label: "감각형",
       shortLabel: "감각형",
-      description: "전체 맥락과 감각이 맞아떨어질 때 더 확신이 붙는 편이에요."
+      description: "정보가 이어지는 전체 맥락이나 실제 사용하는 장면이 그려질 때 납득이 가는 편이에요."
     }
   }
 ];
