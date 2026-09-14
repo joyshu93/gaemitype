@@ -79,28 +79,29 @@ export default function ReadingResultsGuidePage() {
       <section>
         <h2 className="text-2xl font-semibold text-ink">결과 문장을 관찰 질문으로 바꾸기</h2>
         <p className="mt-4 text-base leading-8 text-ink/72">
-          강점, 습관, 주의점은 결론보다 관찰의 출발점으로 쓸 때 더 구체적이에요. 문장이
-          맞는지 틀리는지 판정하기보다 최근 장면 하나를 붙여 질문으로 바꿔보세요.
+          타입의 설명 장면과 돌아볼 질문은 최근 선택을 떠올리는 출발점이에요. 문장이 맞는지
+          틀리는지 판정하기보다 최근 장면 하나를 붙여 질문으로 바꿔보세요.
         </p>
         <div className="mt-5 grid gap-3">
           <article className="rounded-2xl bg-sand/70 p-5">
-            <h3 className="font-semibold text-ink">강점 → 도움이 된 장면 찾기</h3>
+            <h3 className="font-semibold text-ink">설명 장면 → 내가 먼저 본 것</h3>
             <p className="mt-2 text-sm leading-7 text-ink/70">
-              “쉽게 휩쓸리지 않는다”면, 최근 내 기준을 지켜 선택이 한결 편해진 장면은
-              언제였는지 떠올려봐요.
+              “원래 중요했던 조건을 떠올린다”는 설명을 읽고, 최근 선택에서 처음 확인한
+              조건이 무엇이었는지 적어봐요.
             </p>
           </article>
           <article className="rounded-2xl bg-sand/70 p-5">
-            <h3 className="font-semibold text-ink">습관 → 첫 단서 찾기</h3>
+            <h3 className="font-semibold text-ink">이번 답변 → 함께 고른 다른 방식</h3>
             <p className="mt-2 text-sm leading-7 text-ink/70">
-              “기준부터 떠올린다”면, 실제로 가장 먼저 확인한 기준이 무엇이었는지 적어봐요.
+              양쪽 선택이 있었다면 어떤 질문에서 다른 쪽을 골랐는지 살펴봐요. 타입이
+              같아도 답변 내용은 다를 수 있어요.
             </p>
           </article>
           <article className="rounded-2xl bg-sand/70 p-5">
-            <h3 className="font-semibold text-ink">주의점 → 놓친 단서 확인하기</h3>
+            <h3 className="font-semibold text-ink">돌아볼 질문 → 최근 장면 하나</h3>
             <p className="mt-2 text-sm leading-7 text-ink/70">
-              “변화를 늦게 받아들일 수 있다”면, 그때 새로 들어왔지만 지나친 정보가
-              있었는지 돌아봐요.
+              “미리 정해둔 것과 현장에서 달리 정한 것은 무엇이었나요?”라는 질문에 최근
+              장면 하나를 붙여봐요.
             </p>
           </article>
         </div>

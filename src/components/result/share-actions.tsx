@@ -13,14 +13,12 @@ export function ShareActions({ shareUrl, shareText }: ShareActionsProps) {
   const router = useRouter();
   const [copied, setCopied] = useState(false);
   const [copiedText, setCopiedText] = useState(false);
-  const resolvedShareUrl =
-    typeof window !== "undefined" && !shareUrl.startsWith("http")
-      ? `${window.location.origin}${shareUrl}`
-      : shareUrl;
-
   const copyLink = async () => {
     try {
-      await navigator.clipboard.writeText(resolvedShareUrl);
+      const clipboardShareUrl = shareUrl.startsWith("http")
+        ? shareUrl
+        : `${window.location.origin}${shareUrl}`;
+      await navigator.clipboard.writeText(clipboardShareUrl);
       setCopied(true);
       window.setTimeout(() => setCopied(false), 2000);
     } catch {
@@ -50,7 +48,7 @@ export function ShareActions({ shareUrl, shareText }: ShareActionsProps) {
           공유 링크
         </p>
         <p className="mt-3 break-all text-sm leading-6 text-ink/72">
-          {resolvedShareUrl}
+          {shareUrl}
         </p>
       </div>
 
@@ -79,7 +77,7 @@ export function ShareActions({ shareUrl, shareText }: ShareActionsProps) {
       </div>
 
       <div className="rounded-2xl border border-dashed border-ink/15 bg-white px-4 py-3 text-sm leading-6 text-ink/55">
-        공유 이미지는 다음 단계에서 붙일 예정이에요. 지금은 링크와 짧은 문구를 바로 복사해서 공유할 수 있어요.
+        결과 링크 복사로 만든 링크에는 타입 설명만 담겨요. 답변 내용과 선택 횟수는 포함되지 않아요.
       </div>
     </div>
   );

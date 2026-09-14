@@ -80,7 +80,7 @@ export default function DecisionJournalGuidePage() {
       <section className="rounded-[24px] bg-ink p-6 text-white">
         <h2 className="text-xl font-semibold">공유 링크에는 응답 분포가 들어가지 않아요</h2>
         <p className="mt-3 text-base leading-8 text-white/78">
-          공유된 결과 링크에는 네 글자 타입 코드만 담겨 있어 타입의 기본 설명만 보여줘요.
+          결과 링크 복사로 만든 링크에는 네 글자 타입 코드만 담겨 있어 타입의 기본 설명만 보여줘요.
           3:2인지 5:0인지 같은 답변 분포는 링크에 포함되지 않습니다. 그래서 누군가의 공유
           결과를 볼 때도 그 타입 설명만으로 당시의 세부 답변이나 선택 과정을 추측하지 않는
           편이 자연스러워요.

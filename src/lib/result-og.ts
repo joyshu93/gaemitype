@@ -1,4 +1,3 @@
-import { getResultShareCopy } from "@/data/result-share-copy";
 import type { TypeCode } from "@/domain/types";
 import { getSharedResultFromCode } from "@/domain/scoring";
 import { getResultImagePath } from "@/lib/result-images";
@@ -29,17 +28,9 @@ export function buildResultMetadata(code: string, siteUrl: string) {
     };
   }
 
-  const shareCopy = getResultShareCopy(sharedResult.code);
-  const shareDescription =
-    shareCopy?.cardShareLine ??
-    shareCopy?.cardHeadline ??
-    sharedResult.profile.shareText ??
-    sharedResult.profile.headline ??
-    DEFAULT_DESCRIPTION;
-
   return {
     title: `${sharedResult.profile.name} (${sharedResult.code}) | ${SERVICE_NAME}`,
-    description: `${shareDescription} ${SERVICE_NAME} 결과예요.`,
+    description: `${sharedResult.profile.headline}. 일상 선택을 돌아보는 ${SERVICE_NAME} 결과예요.`,
     url: `${siteUrl}/result?code=${sharedResult.code}`,
     imageUrl: `${siteUrl}${getResultOgImagePath(sharedResult.code)}`
   };

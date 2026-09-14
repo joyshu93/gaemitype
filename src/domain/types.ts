@@ -52,6 +52,14 @@ export type Question = {
 
 export type AnswerState = Record<string, 0 | 1 | undefined>;
 
+export type AxisAnswerExample = {
+  questionId: string;
+  questionNumber: number;
+  prompt: string;
+  selectedOptionLabel: string;
+  selectedCode: AxisLetter;
+};
+
 export type AxisScore = {
   key: AxisKey;
   selectedCode: AxisLetter;
@@ -62,6 +70,7 @@ export type AxisScore = {
   title: string;
   selectedLabel: string;
   summary: string;
+  examples?: AxisAnswerExample[];
 };
 
 export type TypeProfile = {
@@ -69,9 +78,8 @@ export type TypeProfile = {
   name: string;
   headline: string;
   description: string;
-  strengths: [string, string, string];
-  habits: [string, string, string];
-  cautions: [string, string];
+  scenes: [string, string];
+  reflections: [string, string];
   shareText: string;
 };
 
@@ -81,6 +89,7 @@ export type ResultSummary = {
   axisResults: AxisScore[];
   shareUrl: string;
   mode: "answers" | "shared";
+  sharedReason?: "code-only" | "invalid-answers";
 };
 
 export type ResultShareTheme = {

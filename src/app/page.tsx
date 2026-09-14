@@ -42,7 +42,7 @@ export default function LandingPage() {
             <p className="text-xs uppercase tracking-[0.24em] text-coral">ALRD</p>
             <h2 className="mt-3 text-2xl font-semibold text-ink">기준설계형</h2>
             <p className="mt-3 text-sm leading-6 text-ink/70">
-              기준부터 세우고, 납득한 방향을 길게 보는 타입
+              미리 살펴보고, 익숙한 기준과 구체적인 근거로 긴 흐름을 보는 타입
             </p>
           </div>
         </div>

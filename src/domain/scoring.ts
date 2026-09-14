@@ -1,6 +1,6 @@
-import { AXES } from "@/data/axes";
-import { QUESTIONS } from "@/data/questions";
-import { TYPE_PROFILES } from "@/data/type-profiles";
+import { AXES } from "../data/axes.ts";
+import { QUESTIONS } from "../data/questions.ts";
+import { TYPE_PROFILES } from "../data/type-profiles.ts";
 import type {
   AnswerState,
   AxisDefinition,
@@ -55,8 +55,38 @@ function resolveAxisScore(axis: AxisDefinition, answers: AnswerState): AxisScore
     rightScore,
     title: axis.title,
     selectedLabel,
-    summary
+    summary,
+    examples: getAxisExamples(axis, answers)
   };
+}
+
+function getAxisExamples(axis: AxisDefinition, answers: AnswerState) {
+  const axisQuestions = QUESTIONS.filter((question) => question.axis === axis.key);
+  const selectedQuestions = axisQuestions.flatMap((question) => {
+    const answer = answers[question.id];
+    if (answer === undefined) {
+      return [];
+    }
+
+    const selected = question.options[answer];
+    return [{
+      direction: selected.code === axis.left.code ? "left" : "right",
+      example: {
+        questionId: question.id,
+        questionNumber: QUESTIONS.indexOf(question) + 1,
+        prompt: question.prompt,
+        selectedOptionLabel: selected.label,
+        selectedCode: selected.code
+      }
+    }];
+  });
+
+  const left = selectedQuestions.find((item) => item.direction === "left");
+  const right = selectedQuestions.find((item) => item.direction === "right");
+
+  return [left?.example, right?.example].filter(
+    (example): example is NonNullable<typeof example> => example !== undefined
+  );
 }
 
 export function buildResultSummary(answers: AnswerState, baseUrl: string): ResultSummary {
@@ -103,36 +133,42 @@ export function getSharedResultFromCode(code: string, baseUrl: string): ResultSu
     profile,
     axisResults,
     shareUrl: `${baseUrl}/result?code=${code}`,
-    mode: "shared"
+    mode: "shared",
+    sharedReason: "code-only"
   };
 }
 
 export function getResultFromAnswersOrCode(params: {
-  code: string;
-  serializedAnswers?: string;
+  code: string | string[] | undefined;
+  serializedAnswers?: string | string[];
   baseUrl: string;
 }): ResultSummary | null {
   const { code, serializedAnswers, baseUrl } = params;
 
-  if (serializedAnswers) {
-    const orderedIds = QUESTIONS.map((item) => item.id);
-    const answers: AnswerState = {};
-
-    orderedIds.forEach((id, index) => {
-      const value = serializedAnswers[index];
-      if (value === "0" || value === "1") {
-        answers[id] = Number(value) as 0 | 1;
-      }
-    });
-
-    const hasAllAnswers = QUESTIONS.every((question) => answers[question.id] !== undefined);
-    if (hasAllAnswers) {
-      const result = buildResultSummary(answers, baseUrl);
-      if (result.code === code) {
-        return result;
-      }
-    }
+  if (typeof code !== "string") {
+    return null;
   }
 
-  return getSharedResultFromCode(code, baseUrl);
+  const sharedResult = getSharedResultFromCode(code, baseUrl);
+  if (!sharedResult) {
+    return null;
+  }
+
+  if (serializedAnswers === undefined) {
+    return sharedResult;
+  }
+
+  if (typeof serializedAnswers !== "string" || !/^[01]{20}$/.test(serializedAnswers)) {
+    return { ...sharedResult, sharedReason: "invalid-answers" };
+  }
+
+  const answers: AnswerState = {};
+  QUESTIONS.forEach((question, index) => {
+    answers[question.id] = Number(serializedAnswers[index]) as 0 | 1;
+  });
+
+  const result = buildResultSummary(answers, baseUrl);
+  return result.code === code
+    ? result
+    : { ...sharedResult, sharedReason: "invalid-answers" };
 }
