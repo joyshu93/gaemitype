@@ -230,6 +230,7 @@ NEXT_PUBLIC_ADSENSE_RESULT_SLOT=1234567890
 - 광고 및 접근 보호 설정은 유지합니다. Production은 `https://gaemitype.vercel.app`을 사용합니다. Preview의 환경 값을 Production으로 복사하거나 Preview 주소로 빌드한 결과물을 그대로 승격하지 않습니다.
 - 운영 배포 후 개인 응답 결과·코드 전용 공유 결과·잘못된 URL의 분기와 canonical·OG·robots·sitemap의 운영 도메인을 다시 확인합니다. 실제 모바일 기기·브라우저 200% 확대·화면 읽기 도구·메신저 미리보기는 각각 수행 여부를 따로 기록합니다.
 - 배포 주소·커밋·직접 확인한 항목과 남은 검증은 [2026-09-14 Preview 검증 기록](docs/reviews/2026-09-14-preview-verification.md)에 남겼습니다.
+- 2026-09-14 승인된 P1–P3를 운영에 반영했습니다. [운영 검증 기록](docs/reviews/2026-09-14-production-verification.md)에 실제 배포·완주·공유 URL·공개 응답 확인과 첫 클릭 복사 및 실기기 검증의 미확정 사항을 구분해 남겼습니다.
 
 ## 프로젝트 구조
 
