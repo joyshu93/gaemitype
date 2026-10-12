@@ -79,7 +79,7 @@ export type TypeProfile = {
   headline: string;
   description: string;
   scenes: [string, string];
-  reflections: [string, string];
+  reflections: [string, string, string, string];
   shareText: string;
 };
 

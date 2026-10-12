@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "개미타입 | 투자 성향 16타입 테스트",
+  title: "개미타입 | 일상 선택 16타입 테스트",
   description:
-    "투자 습관과 판단 스타일을 16타입으로 가볍게 돌아보는 테스트"
+    "20개의 일상 질문으로 판단 습관을 가볍게 돌아보는 16타입 테스트"
 };
 
 export default function LandingPage() {
@@ -13,13 +13,13 @@ export default function LandingPage() {
       <section className="grid gap-8 rounded-[36px] bg-white p-8 shadow-card sm:grid-cols-[1.15fr_0.85fr] sm:p-12">
         <div className="max-w-2xl">
           <p className="text-sm font-medium uppercase tracking-[0.24em] text-coral">
-            투자 성향 테스트
+            일상 선택 16타입 테스트
           </p>
           <h1 className="mt-4 text-4xl font-semibold leading-tight text-ink sm:text-6xl">
-            나는 어떤 투자 타입일까?
+            내 선택 습관은 어떤 개미 타입일까?
           </h1>
           <p className="mt-4 text-base leading-7 text-ink/72 sm:text-lg">
-            20문항으로 나의 투자 습관과 판단 스타일을 가볍게 돌아보는 테스트예요.
+            20개의 일상 질문에 답하고, 이번 답변에 담긴 판단 습관을 16개 개미 타입 중 하나로 만나보세요.
           </p>
 
           <div className="mt-8">
@@ -45,6 +45,12 @@ export default function LandingPage() {
               미리 살펴보고, 익숙한 기준과 구체적인 근거로 긴 흐름을 보는 타입
             </p>
           </div>
+          <Link
+            href="/result?code=ALRD"
+            className="mt-4 inline-flex text-sm font-medium text-ink underline decoration-coral/50 underline-offset-4"
+          >
+            기준설계형 기본 설명 보기
+          </Link>
         </div>
       </section>
 
@@ -67,7 +73,7 @@ export default function LandingPage() {
           href="/guides"
           className="mt-3 ml-4 inline-flex font-medium text-ink underline decoration-coral/50 underline-offset-4"
         >
-          투자 성향 가이드 읽기
+          결과 읽기 가이드
         </Link>
       </section>
     </div>

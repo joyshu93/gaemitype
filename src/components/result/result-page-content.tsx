@@ -40,18 +40,28 @@ export function ResultPageContent({ result }: ResultPageContentProps) {
 
       <section className="mt-5 rounded-[28px] bg-white p-6 shadow-card">
         <h2 className="text-xl font-semibold text-ink">돌아볼 질문</h2>
-        <ul className="mt-4 space-y-3 text-sm leading-7 text-ink/72">
-          {result.profile.reflections.map((reflection) => <li key={reflection}>- {reflection}</li>)}
-        </ul>
-        <p className="mt-4 text-sm leading-7 text-ink/60">
-          실제로 떠오르는 장면만 생각해봐도 괜찮아요. 두 방식의 경험이 모두 있어야 하는 것은 아니에요.
+        <p className="mt-3 text-sm leading-7 text-ink/68">
+          이 타입의 네 가지 방향을 일상에서 돌아보는 공통 질문이에요. 실제로 떠오르는 장면이 있는 질문 하나만 골라 생각해봐도 괜찮아요.
         </p>
+        <ul className="mt-4 space-y-3 text-sm leading-7 text-ink/72">
+          {result.profile.reflections.map((reflection, index) => {
+            const axis = result.axisResults[index];
+            return (
+              <li key={axis.key} className="rounded-2xl bg-sand/60 p-4">
+                <h3 className="font-semibold text-ink">
+                  {axis.title} · {axis.selectedCode} {axis.selectedLabel}
+                </h3>
+                <p className="mt-2">{reflection}</p>
+              </li>
+            );
+          })}
+        </ul>
       </section>
 
       <section className="mt-5 rounded-[28px] border border-ink/10 bg-white p-6 shadow-card">
         <h2 className="text-xl font-semibold text-ink">참고로만 봐주세요</h2>
         <p className="mt-3 text-sm leading-7 text-ink/68">
-          이 결과는 사용자의 투자 습관과 판단 성향을 가볍게 돌아보는 참고용 요약이에요. 종목 추천, 수익 보장, 맞춤형 투자 제안, 매수나 매도 신호를 제공하지 않아요.
+          개미타입의 결과는 일상적인 판단 습관을 가볍게 돌아보는 참고용 콘텐츠예요. 종목 추천, 수익 보장, 맞춤형 투자 제안, 매수나 매도 신호를 제공하지 않아요.
         </p>
         <div className="mt-6 border-t border-ink/8 pt-6">
           <Link href="/guides/reading-results" className="inline-flex font-medium text-ink underline decoration-coral/50 underline-offset-4">

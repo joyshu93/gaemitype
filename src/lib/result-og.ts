@@ -4,7 +4,7 @@ import { getResultImagePath } from "@/lib/result-images";
 
 const SERVICE_NAME = "개미타입";
 const DEFAULT_DESCRIPTION =
-  "투자 습관과 판단 성향을 가볍게 돌아보는 16타입 결과예요.";
+  "일상 선택에 담긴 판단 습관을 가볍게 돌아보는 개미타입 결과예요.";
 
 export function getResultOgImagePath(code?: TypeCode) {
   if (!code) {

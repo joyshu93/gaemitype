@@ -3,7 +3,7 @@ import Link from "next/link";
 import { GUIDES } from "@/data/guides.mts";
 
 export const metadata: Metadata = {
-  title: "투자 성향 가이드 | 개미타입",
+  title: "판단 습관과 결과 읽기 가이드 | 개미타입",
   description: "개미타입의 4가지 판단 축과 16타입 결과를 읽고 판단 습관을 돌아보는 가이드입니다.",
   alternates: { canonical: "/guides" }
 };

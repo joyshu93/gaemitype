@@ -5,7 +5,7 @@ export function SiteFooter() {
     <footer className="border-t border-ink/10 bg-white">
       <div className="mx-auto max-w-5xl px-4 py-7 text-sm text-ink/60 sm:px-6">
         <div className="space-y-1">
-          <p>개미타입은 투자 성향을 가볍게 정리해보는 참고용 테스트입니다.</p>
+          <p>개미타입은 일상 질문에 담긴 판단 습관을 가볍게 돌아보는 참고용 테스트입니다.</p>
           <p>종목 추천, 수익 보장, 매수·매도 시그널을 제공하지 않습니다.</p>
         </div>
         <nav

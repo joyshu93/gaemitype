@@ -1,12 +1,49 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import { buildResultSummary, getResultFromAnswersOrCode } from "./scoring.ts";
+import { TYPE_PROFILES } from "../data/type-profiles.ts";
 import {
   getAxisSelectionExplanation,
   getResultDisplayState
 } from "./result-presentation.ts";
 
 const baseUrl = "https://example.com";
+
+test("16타입의 돌아볼 질문은 코드 순서의 네 축에 일관되게 대응한다", () => {
+  const questionsByPole = new Map<string, string>();
+  for (const profile of TYPE_PROFILES) {
+    assert.equal(profile.reflections.length, 4, profile.code);
+    const result = getResultFromAnswersOrCode({ code: profile.code, baseUrl });
+    assert.ok(result);
+    profile.reflections.forEach((question, index) => {
+      const pole = profile.code[index];
+      assert.equal(result.axisResults[index].selectedCode, pole);
+      assert.ok(question.trim().length > 0);
+      if (questionsByPole.has(pole)) assert.equal(question, questionsByPole.get(pole));
+      else questionsByPole.set(pole, question);
+    });
+  }
+  assert.equal(questionsByPole.size, 8);
+  assert.equal(new Set(questionsByPole.values()).size, 8);
+});
+
+test("한 글자 다른 32쌍은 해당 축의 돌아볼 질문 하나만 달라진다", () => {
+  let pairCount = 0;
+  TYPE_PROFILES.forEach((profile, i) => {
+    for (const neighbor of TYPE_PROFILES.slice(i + 1)) {
+      const changedAxes = [...profile.code].flatMap((letter, index) =>
+        letter !== neighbor.code[index] ? [index] : []
+      );
+      if (changedAxes.length !== 1) continue;
+      pairCount += 1;
+      const changedQuestions = profile.reflections.flatMap((question, index) =>
+        question !== neighbor.reflections[index] ? [index] : []
+      );
+      assert.deepEqual(changedQuestions, changedAxes, `${profile.code}/${neighbor.code}`);
+    }
+  });
+  assert.equal(pairCount, 32);
+});
 
 test("21자리 answers는 개인 결과가 아니라 답변 확인 실패 공유 결과가 된다", () => {
   const result = getResultFromAnswersOrCode({

@@ -10,7 +10,7 @@ const siteUrl = getSiteUrl();
 
 export const metadata: Metadata = {
   title: "개미타입",
-  description: "투자 습관과 판단 성향을 16타입으로 가볍게 읽어보는 테스트",
+  description: "20개의 일상 질문으로 판단 습관을 가볍게 돌아보는 16타입 테스트",
   metadataBase: new URL(siteUrl),
   icons: {
     icon: [{ url: "/favicon.ico", type: "image/svg+xml" }],
@@ -18,14 +18,14 @@ export const metadata: Metadata = {
   },
   openGraph: {
     title: "개미타입",
-    description: "투자 습관과 판단 성향을 16타입으로 가볍게 읽어보는 테스트",
+    description: "20개의 일상 질문으로 판단 습관을 가볍게 돌아보는 16타입 테스트",
     type: "website",
     url: siteUrl
   },
   twitter: {
     card: "summary_large_image",
     title: "개미타입",
-    description: "투자 습관과 판단 성향을 16타입으로 가볍게 읽어보는 테스트"
+    description: "20개의 일상 질문으로 판단 습관을 가볍게 돌아보는 16타입 테스트"
   }
 };
 
