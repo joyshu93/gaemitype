@@ -1,5 +1,5 @@
 import { AXES } from "@/data/axes";
-import { getAxisSelectionExplanation } from "@/domain/result-presentation";
+import { getAxisReflection, getAxisSelectionExplanation } from "@/domain/result-presentation";
 import type { AxisScore, ResultSummary } from "@/domain/types";
 
 type AxisGridProps = {
@@ -29,6 +29,7 @@ export function AxisGrid({ items, mode }: AxisGridProps) {
     <section className="grid gap-4 sm:grid-cols-2">
       {items.map((item) => {
         const axis = getAxisDefinition(item.key);
+        const reflection = isPersonal ? getAxisReflection(item) : "";
 
         return (
           <article
@@ -79,6 +80,12 @@ export function AxisGrid({ items, mode }: AxisGridProps) {
                         );
                       })}
                     </div>
+                    {reflection ? (
+                      <div className="mt-4 rounded-2xl border border-ink/10 p-4">
+                        <h3 className="text-sm font-semibold text-ink">이번 선택을 돌아보면</h3>
+                        <p className="mt-2 text-sm leading-7 text-ink/72">{reflection}</p>
+                      </div>
+                    ) : null}
                   </section>
                 ) : null}
               </>

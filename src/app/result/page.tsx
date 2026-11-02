@@ -9,6 +9,7 @@ type ResultPageProps = {
   searchParams: Promise<{
     code?: string | string[];
     answers?: string | string[];
+    v?: string | string[];
   }>;
 };
 
@@ -53,6 +54,7 @@ export default async function ResultPage({ searchParams }: ResultPageProps) {
   const result = getResultFromAnswersOrCode({
     code: params.code,
     serializedAnswers: params.answers,
+    questionVersion: params.v,
     baseUrl: ""
   });
 

@@ -1,6 +1,7 @@
 import type { AnswerState } from "@/domain/types";
+import { QUESTION_VERSION } from "../data/questions.ts";
 
-const ANSWERS_KEY = "gaemitype.answers";
+const ANSWERS_KEY = `gaemitype.answers.v${QUESTION_VERSION}`;
 
 export function loadAnswers(): AnswerState {
   if (typeof window === "undefined") {
@@ -29,4 +30,5 @@ export function clearAnswers() {
   }
 
   window.localStorage.removeItem(ANSWERS_KEY);
+  window.localStorage.removeItem("gaemitype.answers");
 }

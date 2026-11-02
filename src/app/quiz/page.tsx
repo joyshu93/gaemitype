@@ -4,7 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { ProgressBar } from "@/components/quiz/progress-bar";
 import { QuestionCard } from "@/components/quiz/question-card";
-import { QUESTIONS } from "@/data/questions";
+import { QUESTIONS, QUESTION_VERSION } from "@/data/questions";
 import type { AnswerState } from "@/domain/types";
 import { serializeAnswers } from "@/lib/quiz-params";
 import { clearAnswers, loadAnswers, saveAnswers } from "@/lib/storage";
@@ -64,7 +64,7 @@ export default function QuizPage() {
     window.setTimeout(() => {
       if (currentIndex === QUESTIONS.length - 1) {
         const serialized = serializeAnswers(nextAnswers, orderedIds);
-        router.push(`/calculating?answers=${serialized}`);
+        router.push(`/calculating?answers=${serialized}&v=${QUESTION_VERSION}`);
         return;
       }
 

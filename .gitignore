@@ -17,3 +17,6 @@ pnpm-debug.log*
 dist/
 coverage/
 *.tsbuildinfo
+
+# Local account dashboard attachment; contains unrelated site status
+/docs/reviews/assets/2026-10-30-adsense-status.png

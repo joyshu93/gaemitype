@@ -1,19 +1,20 @@
 import { AXES } from "../data/axes.ts";
-import { QUESTIONS } from "../data/questions.ts";
+import { LEGACY_QUESTIONS, QUESTIONS, QUESTION_VERSION } from "../data/questions.ts";
 import { TYPE_PROFILES } from "../data/type-profiles.ts";
 import type {
   AnswerState,
   AxisDefinition,
   AxisLetter,
   AxisScore,
+  Question,
   ResultSummary,
   TypeCode
 } from "@/domain/types";
 
 const profilesByCode = new Map(TYPE_PROFILES.map((profile) => [profile.code, profile]));
 
-function resolveAxisScore(axis: AxisDefinition, answers: AnswerState): AxisScore {
-  const axisQuestions = QUESTIONS.filter((question) => question.axis === axis.key);
+function resolveAxisScore(axis: AxisDefinition, answers: AnswerState, questions: Question[]): AxisScore {
+  const axisQuestions = questions.filter((question) => question.axis === axis.key);
   let leftScore = 0;
   let rightScore = 0;
   let tieBreaker = 0;
@@ -56,12 +57,12 @@ function resolveAxisScore(axis: AxisDefinition, answers: AnswerState): AxisScore
     title: axis.title,
     selectedLabel,
     summary,
-    examples: getAxisExamples(axis, answers)
+    examples: getAxisExamples(axis, answers, questions)
   };
 }
 
-function getAxisExamples(axis: AxisDefinition, answers: AnswerState) {
-  const axisQuestions = QUESTIONS.filter((question) => question.axis === axis.key);
+function getAxisExamples(axis: AxisDefinition, answers: AnswerState, questions: Question[]) {
+  const axisQuestions = questions.filter((question) => question.axis === axis.key);
   const selectedQuestions = axisQuestions.flatMap((question) => {
     const answer = answers[question.id];
     if (answer === undefined) {
@@ -73,7 +74,7 @@ function getAxisExamples(axis: AxisDefinition, answers: AnswerState) {
       direction: selected.code === axis.left.code ? "left" : "right",
       example: {
         questionId: question.id,
-        questionNumber: QUESTIONS.indexOf(question) + 1,
+        questionNumber: questions.indexOf(question) + 1,
         prompt: question.prompt,
         selectedOptionLabel: selected.label,
         selectedCode: selected.code
@@ -89,8 +90,8 @@ function getAxisExamples(axis: AxisDefinition, answers: AnswerState) {
   );
 }
 
-export function buildResultSummary(answers: AnswerState, baseUrl: string): ResultSummary {
-  const axisResults = AXES.map((axis) => resolveAxisScore(axis, answers));
+export function buildResultSummary(answers: AnswerState, baseUrl: string, questions: Question[] = QUESTIONS): ResultSummary {
+  const axisResults = AXES.map((axis) => resolveAxisScore(axis, answers, questions));
   const code = axisResults.map((axis) => axis.selectedCode).join("") as TypeCode;
   const profile = profilesByCode.get(code);
 
@@ -141,9 +142,10 @@ export function getSharedResultFromCode(code: string, baseUrl: string): ResultSu
 export function getResultFromAnswersOrCode(params: {
   code: string | string[] | undefined;
   serializedAnswers?: string | string[];
+  questionVersion?: string | string[];
   baseUrl: string;
 }): ResultSummary | null {
-  const { code, serializedAnswers, baseUrl } = params;
+  const { code, serializedAnswers, questionVersion, baseUrl } = params;
 
   if (typeof code !== "string") {
     return null;
@@ -162,12 +164,19 @@ export function getResultFromAnswersOrCode(params: {
     return { ...sharedResult, sharedReason: "invalid-answers" };
   }
 
+  const questions = questionVersion === undefined || questionVersion === "1"
+    ? LEGACY_QUESTIONS
+    : questionVersion === QUESTION_VERSION ? QUESTIONS : null;
+  if (!questions) {
+    return { ...sharedResult, sharedReason: "invalid-answers" };
+  }
+
   const answers: AnswerState = {};
-  QUESTIONS.forEach((question, index) => {
+  questions.forEach((question, index) => {
     answers[question.id] = Number(serializedAnswers[index]) as 0 | 1;
   });
 
-  const result = buildResultSummary(answers, baseUrl);
+  const result = buildResultSummary(answers, baseUrl, questions);
   return result.code === code
     ? result
     : { ...sharedResult, sharedReason: "invalid-answers" };

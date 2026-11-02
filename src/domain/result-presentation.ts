@@ -1,6 +1,18 @@
 import { AXES } from "../data/axes.ts";
 import type { AxisScore, ResultSummary } from "./types.ts";
 
+export function getAxisReflection(item: AxisScore): string {
+  if (typeof item.leftScore !== "number" || typeof item.rightScore !== "number") return "";
+  const [first, second] = item.examples ?? [];
+  if (!first) return "";
+
+  const firstChoice = `Q${first.questionNumber}에서는 ‘${first.selectedOptionLabel}’`;
+  if (second) {
+    return `${firstChoice} 답변을, Q${second.questionNumber}에서는 ‘${second.selectedOptionLabel}’ 답변을 골랐어요. 두 장면에서 먼저 고른 방식이 달랐던 이유가 떠오르나요?`;
+  }
+  return `${firstChoice} 답변을 골랐어요. 다른 상황에서는 먼저 고른 방식이 달랐던 적도 있나요?`;
+}
+
 export function getAxisSelectionExplanation(item: AxisScore): string {
   if (typeof item.leftScore !== "number" || typeof item.rightScore !== "number") {
     return "";

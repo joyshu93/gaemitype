@@ -12,6 +12,7 @@ export const metadata: Metadata = {
 type CalculatingPageProps = {
   searchParams: Promise<{
     answers?: string;
+    v?: string | string[];
   }>;
 };
 
@@ -23,7 +24,7 @@ export default async function CalculatingPage({
 
   return (
     <div className="mx-auto flex min-h-[60vh] max-w-2xl flex-col items-center justify-center px-4 text-center sm:px-6">
-      <CalculatingRedirect serializedAnswers={serializedAnswers} />
+      <CalculatingRedirect serializedAnswers={serializedAnswers} questionVersion={params.v} />
       <div className="h-14 w-14 animate-spin rounded-full border-4 border-ink/15 border-t-coral" />
       <p className="mt-6 text-sm font-medium uppercase tracking-[0.24em] text-coral">
         Calculating

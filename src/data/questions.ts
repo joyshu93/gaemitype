@@ -1,5 +1,7 @@
 import type { Question } from "@/domain/types";
 
+export const QUESTION_VERSION = "2";
+
 export const QUESTIONS: Question[] = [
   {
     id: "q01",
@@ -42,23 +44,23 @@ export const QUESTIONS: Question[] = [
     ]
   },
   {
-  id: "q05",
-  axis: "AP",
-  prompt: "처음 가보는 카페에 들어갔어요. 메뉴를 고를 때 더 먼저 하는 행동은?",
-  helper: "낯선 선택지 앞에서의 습관을 떠올려보세요.",
-  options: [
-    { value: 0, code: "A", label: "내가 원래 좋아하는 메뉴부터 먼저 찾는다" },
-    { value: 1, code: "P", label: "새로운 인기 메뉴부터 본다" }
-  ]
-},
+    id: "q05",
+    axis: "AP",
+    prompt: "처음 가는 카페를 정했어요. 메뉴를 고르는 모습에 더 가까운 쪽은?",
+    helper: "메뉴를 언제 정하는지 떠올려보세요.",
+    options: [
+      { value: 0, code: "A", label: "가기 전에 메뉴판을 살펴보고 마실 것을 정해둔다" },
+      { value: 1, code: "P", label: "도착한 뒤 메뉴판을 살펴보고 마실 것을 정한다" }
+    ]
+  },
   {
     id: "q06",
     axis: "LT",
-    prompt: "드라마나 유튜브 채널을 하나 정하면, 당신은 보통 어떤 편인가요?",
-    helper: "한 번 정한 것을 얼마나 오래 가져가는지 떠올려보세요.",
+    prompt: "보던 영상 시리즈의 업로드 일정이 바뀌었어요. 무엇을 먼저 살펴보나요?",
+    helper: "변화가 생겼을 때 어디까지 내다보는지 떠올려보세요.",
     options: [
-      { value: 0, code: "L", label: "구독하고 그 채널의 다른 영상을 섭렵한다" },
-      { value: 1, code: "T", label: "매번 더 재밌는 채널이 없는지 찾아본다" }
+      { value: 0, code: "L", label: "앞으로 몇 주 동안 보는 흐름에 미칠 영향을 본다" },
+      { value: 1, code: "T", label: "오늘 보는 데 바로 조정할 부분을 본다" }
     ]
   },
   {
@@ -202,3 +204,31 @@ export const QUESTIONS: Question[] = [
   ]
 }
 ];
+
+// Unversioned personal-result URLs were answered against these original words.
+// Keep their recorded choices intact when current questions change.
+export const LEGACY_QUESTIONS: Question[] = QUESTIONS.map((question) => {
+  if (question.id === "q05") {
+    return {
+      ...question,
+      prompt: "처음 가보는 카페에 들어갔어요. 메뉴를 고를 때 더 먼저 하는 행동은?",
+      helper: "낯선 선택지 앞에서의 습관을 떠올려보세요.",
+      options: [
+        { value: 0, code: "A", label: "내가 원래 좋아하는 메뉴부터 먼저 찾는다" },
+        { value: 1, code: "P", label: "새로운 인기 메뉴부터 본다" }
+      ]
+    };
+  }
+  if (question.id === "q06") {
+    return {
+      ...question,
+      prompt: "드라마나 유튜브 채널을 하나 정하면, 당신은 보통 어떤 편인가요?",
+      helper: "한 번 정한 것을 얼마나 오래 가져가는지 떠올려보세요.",
+      options: [
+        { value: 0, code: "L", label: "구독하고 그 채널의 다른 영상을 섭렵한다" },
+        { value: 1, code: "T", label: "매번 더 재밌는 채널이 없는지 찾아본다" }
+      ]
+    };
+  }
+  return question;
+});

@@ -8,10 +8,12 @@ import { deserializeAnswers } from "@/lib/quiz-params";
 
 type CalculatingRedirectProps = {
   serializedAnswers: string;
+  questionVersion?: string | string[];
 };
 
 export function CalculatingRedirect({
-  serializedAnswers
+  serializedAnswers,
+  questionVersion
 }: CalculatingRedirectProps) {
   const router = useRouter();
 
@@ -26,13 +28,17 @@ export function CalculatingRedirect({
 
     const result = buildResultSummary(answers, window.location.origin);
     const timeout = window.setTimeout(() => {
-      router.replace(
-        `/result?code=${result.code}&answers=${serializedAnswers}&source=answers`
-      );
+      const params = new URLSearchParams({ code: result.code, answers: serializedAnswers, source: "answers" });
+      if (Array.isArray(questionVersion)) {
+        questionVersion.forEach((version) => params.append("v", version));
+      } else if (questionVersion !== undefined) {
+        params.set("v", questionVersion);
+      }
+      router.replace(`/result?${params}`);
     }, 900);
 
     return () => window.clearTimeout(timeout);
-  }, [router, serializedAnswers]);
+  }, [router, serializedAnswers, questionVersion]);
 
   return null;
 }

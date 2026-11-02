@@ -144,7 +144,7 @@ export default function ReadingResultsGuidePage() {
         <p className="mt-5 text-sm leading-7 text-ink/60">
           링크에서는 타입 기본 설명만 보여줘요. 위 가상 답변과 선택 횟수는 전달하지 않아요.
         </p>
-        <Link href="/result?code=ALRD" className="mt-3 inline-flex font-medium text-ink underline decoration-coral/50 underline-offset-4">
+        <Link href="/result?code=ALRD" prefetch={false} className="mt-3 inline-flex font-medium text-ink underline decoration-coral/50 underline-offset-4">
           ALRD 기준설계형 기본 설명 보기
         </Link>
       </section>
@@ -166,10 +166,10 @@ export default function ReadingResultsGuidePage() {
           링크에서는 타입 기본 설명만 보여줘요. 위 가상 답변과 선택 횟수는 전달하지 않아요.
         </p>
         <div className="mt-3 flex flex-wrap gap-x-6 gap-y-3">
-          <Link href="/result?code=ALRD" className="font-medium text-ink underline decoration-coral/50 underline-offset-4">
+          <Link href="/result?code=ALRD" prefetch={false} className="font-medium text-ink underline decoration-coral/50 underline-offset-4">
             ALRD · 근거형이 포함된 기본 설명
           </Link>
-          <Link href="/result?code=ALRC" className="font-medium text-ink underline decoration-coral/50 underline-offset-4">
+          <Link href="/result?code=ALRC" prefetch={false} className="font-medium text-ink underline decoration-coral/50 underline-offset-4">
             ALRC · 감각형이 포함된 기본 설명
           </Link>
         </div>

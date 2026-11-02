@@ -47,6 +47,7 @@ export default function LandingPage() {
           </div>
           <Link
             href="/result?code=ALRD"
+            prefetch={false}
             className="mt-4 inline-flex text-sm font-medium text-ink underline decoration-coral/50 underline-offset-4"
           >
             기준설계형 기본 설명 보기
